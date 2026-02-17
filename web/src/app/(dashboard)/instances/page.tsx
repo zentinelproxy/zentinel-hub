@@ -60,7 +60,7 @@ export default function InstancesPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Instances</h1>
           <p className="text-muted-foreground">
-            Manage your Sentinel proxy instances
+            Manage your Zentinel proxy instances
           </p>
         </div>
         <Button
@@ -125,7 +125,7 @@ export default function InstancesPage() {
         <CardHeader>
           <CardTitle>Fleet Inventory</CardTitle>
           <CardDescription>
-            All registered Sentinel instances in your fleet
+            All registered Zentinel instances in your fleet
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -156,7 +156,7 @@ export default function InstancesPage() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {search
                   ? "No instances match your search criteria."
-                  : "Register a Sentinel agent to see instances here."}
+                  : "Register a Zentinel agent to see instances here."}
               </p>
             </div>
           ) : (

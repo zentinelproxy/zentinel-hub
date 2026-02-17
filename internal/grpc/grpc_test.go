@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
@@ -707,7 +707,7 @@ func TestIntegration_RegisterAndHeartbeat(t *testing.T) {
 		InstanceName:    "Integration Test Instance",
 		Hostname:        "localhost",
 		AgentVersion:    "1.0.0",
-		SentinelVersion: "2.0.0",
+		ZentinelVersion: "2.0.0",
 	})
 	if err != nil {
 		t.Fatalf("Register failed: %v", err)

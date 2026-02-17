@@ -127,7 +127,7 @@ export default function ConfigsPage() {
         <CardHeader>
           <CardTitle>All Configurations</CardTitle>
           <CardDescription>
-            KDL configuration files for Sentinel proxies
+            KDL configuration files for Zentinel proxies
           </CardDescription>
         </CardHeader>
         <CardContent>

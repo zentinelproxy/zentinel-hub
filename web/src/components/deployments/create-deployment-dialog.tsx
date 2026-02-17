@@ -129,7 +129,7 @@ export function CreateDeploymentDialog({
             Create Deployment
           </DialogTitle>
           <DialogDescription>
-            Deploy a configuration to your Sentinel instances.
+            Deploy a configuration to your Zentinel instances.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

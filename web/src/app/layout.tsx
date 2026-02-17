@@ -6,8 +6,8 @@ import { Providers } from "@/components/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sentinel Hub",
-  description: "Fleet management control plane for Sentinel reverse proxies",
+  title: "Zentinel Hub",
+  description: "Fleet management control plane for Zentinel reverse proxies",
 };
 
 export default function RootLayout({

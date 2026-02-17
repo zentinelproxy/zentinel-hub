@@ -354,7 +354,7 @@ export interface Instance {
   hostname: string;
   status: "online" | "offline" | "unhealthy";
   agentVersion: string;
-  sentinelVersion: string;
+  zentinelVersion: string;
   currentConfigId?: string;
   currentConfigVersion?: number;
   labels: Record<string, string>;

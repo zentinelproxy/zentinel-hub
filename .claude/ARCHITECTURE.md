@@ -1,4 +1,4 @@
-# Sentinel Hub Architecture
+# Zentinel Hub Architecture
 
 **Last Updated:** 2025-12-31
 
@@ -6,11 +6,11 @@
 
 ## Overview
 
-Sentinel Hub is a fleet management control plane for Sentinel reverse proxies. It follows a hub-and-spoke architecture where a central Hub server manages multiple Sentinel instances through lightweight agents.
+Zentinel Hub is a fleet management control plane for Zentinel reverse proxies. It follows a hub-and-spoke architecture where a central Hub server manages multiple Zentinel instances through lightweight agents.
 
 ```
                                    ┌─────────────────────────────────┐
-                                   │         Sentinel Hub            │
+                                   │         Zentinel Hub            │
                                    │                                 │
     ┌──────────┐                   │  ┌─────────┐    ┌──────────┐   │
     │  Web UI  │◀──────REST/WS────▶│  │   API   │◀──▶│ Database │   │
@@ -31,7 +31,7 @@ Sentinel Hub is a fleet management control plane for Sentinel reverse proxies. I
                └────┬────┘            └────┬────┘            └────┬────┘
                     │                      │                      │
                ┌────┴────┐            ┌────┴────┐            ┌────┴────┐
-               │Sentinel │            │Sentinel │            │Sentinel │
+               │Zentinel │            │Zentinel │            │Zentinel │
                │  Proxy  │            │  Proxy  │            │  Proxy  │
                └─────────┘            └─────────┘            └─────────┘
 ```
@@ -126,15 +126,15 @@ web/
 └── index.html        # Entry HTML
 ```
 
-### 3. Sentinel Agent
+### 3. Zentinel Agent
 
-Lightweight daemon running alongside each Sentinel instance.
+Lightweight daemon running alongside each Zentinel instance.
 
 **Responsibilities:**
 - Register instance with Hub
 - Report health status and metrics
 - Receive configuration updates
-- Apply configuration to Sentinel (file write + SIGHUP)
+- Apply configuration to Zentinel (file write + SIGHUP)
 - Report deployment status
 
 **Technology:**
@@ -152,7 +152,7 @@ internal/agent/
 ├── config.go         # Configuration management
 ├── health.go         # Health check logic
 ├── metrics.go        # Metrics collection
-└── sentinel.go       # Sentinel process interaction
+└── zentinel.go       # Zentinel process interaction
 ```
 
 ### 4. Data Store
@@ -203,7 +203,7 @@ Persistent storage for all Hub data.
 9. For each target instance:
    a. Send config via gRPC
    b. Agent writes config file
-   c. Agent sends SIGHUP to Sentinel
+   c. Agent sends SIGHUP to Zentinel
    d. Agent reports success/failure
            │
            ▼
@@ -378,7 +378,7 @@ Role: Viewer
 
 ```yaml
 # Simplified view
-Namespace: sentinel-hub
+Namespace: zentinel-hub
 ├── Deployment: hub-api (replicas: 3)
 │   └── Container: hub
 │       ├── Port 8080 (REST)
@@ -396,14 +396,14 @@ Namespace: sentinel-hub
 
 ## Integration Points
 
-### Sentinel Integration
+### Zentinel Integration
 
-The Hub manages Sentinel instances through agents. Key integration points:
+The Hub manages Zentinel instances through agents. Key integration points:
 
-1. **Configuration Format:** Hub stores and validates Sentinel's KDL configuration format.
-2. **Reload Mechanism:** Agent sends SIGHUP to trigger Sentinel's hot reload.
-3. **Health Checks:** Agent can query Sentinel's `/_/health` endpoint.
-4. **Metrics:** Agent scrapes Sentinel's `/metrics` endpoint.
+1. **Configuration Format:** Hub stores and validates Zentinel's KDL configuration format.
+2. **Reload Mechanism:** Agent sends SIGHUP to trigger Zentinel's hot reload.
+3. **Health Checks:** Agent can query Zentinel's `/_/health` endpoint.
+4. **Metrics:** Agent scrapes Zentinel's `/metrics` endpoint.
 
 ### External Integrations
 
@@ -549,7 +549,7 @@ GET /ready        # Readiness probe (200 if database is connected)
 
 ### Hybrid Push/Pull Model
 
-Sentinel Hub uses a **hybrid model** for configuration distribution:
+Zentinel Hub uses a **hybrid model** for configuration distribution:
 
 | Component | Model | Purpose |
 |-----------|-------|---------|

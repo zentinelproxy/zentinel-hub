@@ -1,5 +1,5 @@
-# Sentinel Hub - mise configuration
-# Fleet management control plane for Sentinel proxies
+# Zentinel Hub - mise configuration
+# Fleet management control plane for Zentinel proxies
 
 [env]
 HUB_LOG_LEVEL = "info"
@@ -180,8 +180,8 @@ echo "Database reset"
 [tasks."docker:build"]
 description = "Build Docker images"
 run = """
-docker build -t sentinel-hub:$(git describe --tags --always --dirty 2>/dev/null || echo dev) -f Dockerfile.hub .
-docker build -t sentinel-agent:$(git describe --tags --always --dirty 2>/dev/null || echo dev) -f Dockerfile.agent .
+docker build -t zentinel-hub:$(git describe --tags --always --dirty 2>/dev/null || echo dev) -f Dockerfile.hub .
+docker build -t zentinel-agent:$(git describe --tags --always --dirty 2>/dev/null || echo dev) -f Dockerfile.agent .
 """
 
 # Clean tasks
@@ -207,7 +207,7 @@ depends = ["clean", "clean:web"]
 [tasks.setup]
 description = "Set up development environment"
 run = """
-echo "Setting up Sentinel Hub development environment..."
+echo "Setting up Zentinel Hub development environment..."
 
 echo "Installing Go dependencies..."
 go mod download

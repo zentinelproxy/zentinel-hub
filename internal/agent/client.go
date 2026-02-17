@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/raskell-io/sentinel-hub/internal/config"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	"github.com/zentinelproxy/zentinel-hub/internal/config"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -31,7 +31,7 @@ type Client struct {
 	instanceName    string
 	hostname        string
 	agentVersion    string
-	sentinelVersion string
+	zentinelVersion string
 	labels          map[string]string
 	capabilities    []string
 
@@ -71,7 +71,7 @@ type ClientConfig struct {
 	InstanceID      string
 	InstanceName    string
 	AgentVersion    string
-	SentinelVersion string
+	ZentinelVersion string
 	Labels          map[string]string
 	Capabilities    []string
 	EventHandler    EventHandler
@@ -96,7 +96,7 @@ func NewClient(cfg ClientConfig) (*Client, error) {
 		instanceName:        cfg.InstanceName,
 		hostname:            hostname,
 		agentVersion:        cfg.AgentVersion,
-		sentinelVersion:     cfg.SentinelVersion,
+		zentinelVersion:     cfg.ZentinelVersion,
 		labels:              cfg.Labels,
 		capabilities:        cfg.Capabilities,
 		eventHandler:        cfg.EventHandler,
@@ -236,7 +236,7 @@ func (c *Client) Register(ctx context.Context) error {
 		InstanceName:    c.instanceName,
 		Hostname:        c.hostname,
 		AgentVersion:    c.agentVersion,
-		SentinelVersion: c.sentinelVersion,
+		ZentinelVersion: c.zentinelVersion,
 		Labels:          c.labels,
 		Capabilities:    c.capabilities,
 	})

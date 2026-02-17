@@ -11,9 +11,9 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/raskell-io/sentinel-hub/internal/fleet"
-	hubgrpc "github.com/raskell-io/sentinel-hub/internal/grpc"
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/fleet"
+	hubgrpc "github.com/zentinelproxy/zentinel-hub/internal/grpc"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 )
 
 // setupTestStore creates a temporary SQLite store for testing.

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 )
 
 var (
@@ -61,7 +61,7 @@ func (s *Service) generateAccessToken(user *store.User) (string, time.Time, erro
 			Subject:   user.ID,
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ExpiresAt: jwt.NewNumericDate(expiresAt),
-			Issuer:    "sentinel-hub",
+			Issuer:    "zentinel-hub",
 		},
 		UserID:    user.ID,
 		Email:     user.Email,
@@ -87,7 +87,7 @@ func (s *Service) generateRefreshToken(user *store.User, sessionID string) (stri
 			Subject:   user.ID,
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ExpiresAt: jwt.NewNumericDate(expiresAt),
-			Issuer:    "sentinel-hub",
+			Issuer:    "zentinel-hub",
 		},
 		UserID:    user.ID,
 		Email:     user.Email,

@@ -81,7 +81,7 @@ export function AppSidebar({ className }: AppSidebarProps) {
       {/* Logo */}
       <div className="flex h-16 items-center gap-2 border-b px-6">
         <Shield className="h-6 w-6 text-primary" />
-        <span className="text-lg font-semibold">Sentinel Hub</span>
+        <span className="text-lg font-semibold">Zentinel Hub</span>
       </div>
 
       {/* Navigation */}

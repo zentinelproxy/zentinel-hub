@@ -51,13 +51,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=sentinel
-      - POSTGRES_PASSWORD=sentinel
-      - POSTGRES_DB=sentinel_hub
+      - POSTGRES_USER=zentinel
+      - POSTGRES_PASSWORD=zentinel
+      - POSTGRES_DB=zentinel_hub
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sentinel -d sentinel_hub"]
+      test: ["CMD-SHELL", "pg_isready -U zentinel -d zentinel_hub"]
       interval: 10s
       timeout: 5s
       retries: 5

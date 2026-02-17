@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package sentinel.hub.v1;
+package zentinel.hub.v1;
 
-option go_package = "github.com/raskell-io/sentinel-hub/pkg/hubpb";
+option go_package = "github.com/zentinelproxy/zentinel-hub/pkg/hubpb";
 
 import "google/protobuf/timestamp.proto";
 
-// FleetService handles communication between Sentinel agents and the Hub.
+// FleetService handles communication between Zentinel agents and the Hub.
 // Uses a hybrid push/pull model: push for event notifications, pull for config fetching.
 service FleetService {
   // ============================================
@@ -66,8 +66,8 @@ message RegisterRequest {
   string hostname = 3;
   // Agent binary version.
   string agent_version = 4;
-  // Sentinel proxy version.
-  string sentinel_version = 5;
+  // Zentinel proxy version.
+  string zentinel_version = 5;
   // Custom labels for filtering and grouping.
   map<string, string> labels = 6;
   // Supported agent capabilities.

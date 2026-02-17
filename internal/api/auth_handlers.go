@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/raskell-io/sentinel-hub/internal/auth"
+	"github.com/zentinelproxy/zentinel-hub/internal/auth"
 	"github.com/rs/zerolog/log"
 )
 

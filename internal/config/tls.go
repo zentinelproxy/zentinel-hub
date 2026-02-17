@@ -1,4 +1,4 @@
-// Package config provides configuration types for Sentinel Hub.
+// Package config provides configuration types for Zentinel Hub.
 package config
 
 import (

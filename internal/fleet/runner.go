@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	hubgrpc "github.com/raskell-io/sentinel-hub/internal/grpc"
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	hubgrpc "github.com/zentinelproxy/zentinel-hub/internal/grpc"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"github.com/rs/zerolog/log"
 )
 

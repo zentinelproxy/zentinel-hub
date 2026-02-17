@@ -1,12 +1,12 @@
-# Sentinel Hub
+# Zentinel Hub
 
-Fleet management control plane for [Sentinel](https://github.com/raskell-io/sentinel) reverse proxies.
+Fleet management control plane for [Zentinel](https://github.com/zentinelproxy/zentinel) reverse proxies.
 
 **Status:** Pre-alpha (under active development)
 
 ## Overview
 
-Sentinel Hub provides centralized management for Sentinel proxy fleets:
+Zentinel Hub provides centralized management for Zentinel proxy fleets:
 
 - **Configuration Management** — Create, version, and deploy configurations
 - **Fleet Visibility** — Monitor health and status across all instances
@@ -30,7 +30,7 @@ Sentinel Hub provides centralized management for Sentinel proxy fleets:
     │  Agent  │       │  Agent  │       │  Agent  │
     └────┬────┘       └────┬────┘       └────┬────┘
     ┌────┴────┐       ┌────┴────┐       ┌────┴────┐
-    │Sentinel │       │Sentinel │       │Sentinel │
+    │Zentinel │       │Zentinel │       │Zentinel │
     └─────────┘       └─────────┘       └─────────┘
 ```
 
@@ -100,7 +100,7 @@ mise run test:coverage
 |---------------------|---------|-------------|
 | `AGENT_HUB_URL` | `localhost:9090` | Hub gRPC server URL |
 | `AGENT_INSTANCE_NAME` | (hostname) | Instance identifier |
-| `AGENT_SENTINEL_CONFIG` | `/etc/sentinel/config.kdl` | Sentinel config path |
+| `AGENT_ZENTINEL_CONFIG` | `/etc/zentinel/config.kdl` | Zentinel config path |
 | `AGENT_HEARTBEAT_INTERVAL` | `30` | Heartbeat interval (seconds) |
 
 ## API
@@ -161,5 +161,5 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Related Projects
 
-- [Sentinel](https://github.com/raskell-io/sentinel) — The reverse proxy this manages
-- [Sentinel Bench](https://github.com/raskell-io/sentinel-bench) — Performance benchmarks
+- [Zentinel](https://github.com/zentinelproxy/zentinel) — The reverse proxy this manages
+- [Zentinel Bench](https://github.com/zentinelproxy/zentinel-bench) — Performance benchmarks

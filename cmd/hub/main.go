@@ -11,11 +11,11 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/raskell-io/sentinel-hub/internal/api"
-	"github.com/raskell-io/sentinel-hub/internal/auth"
-	"github.com/raskell-io/sentinel-hub/internal/fleet"
-	hubgrpc "github.com/raskell-io/sentinel-hub/internal/grpc"
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/api"
+	"github.com/zentinelproxy/zentinel-hub/internal/auth"
+	"github.com/zentinelproxy/zentinel-hub/internal/fleet"
+	hubgrpc "github.com/zentinelproxy/zentinel-hub/internal/grpc"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -36,7 +36,7 @@ func main() {
 
 	rootCmd := &cobra.Command{
 		Use:     "hub",
-		Short:   "Sentinel Hub - Fleet management control plane",
+		Short:   "Zentinel Hub - Fleet management control plane",
 		Version: fmt.Sprintf("%s (commit: %s, built: %s)", version, commit, date),
 	}
 
@@ -75,7 +75,7 @@ func versionCmd() *cobra.Command {
 		Use:   "version",
 		Short: "Print version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Sentinel Hub %s\n", version)
+			fmt.Printf("Zentinel Hub %s\n", version)
 			fmt.Printf("  Commit: %s\n", commit)
 			fmt.Printf("  Built:  %s\n", date)
 		},
@@ -87,7 +87,7 @@ func runServer(httpPort, grpcPort int, dbURL string) error {
 		Int("http_port", httpPort).
 		Int("grpc_port", grpcPort).
 		Str("database", dbURL).
-		Msg("Starting Sentinel Hub")
+		Msg("Starting Zentinel Hub")
 
 	// Initialize database
 	db, err := store.New(dbURL)

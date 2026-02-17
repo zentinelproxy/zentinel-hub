@@ -1,4 +1,4 @@
-module github.com/raskell-io/sentinel-hub
+module github.com/zentinelproxy/zentinel-hub
 
 go 1.25
 

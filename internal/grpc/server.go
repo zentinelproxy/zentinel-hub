@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/raskell-io/sentinel-hub/internal/auth"
-	"github.com/raskell-io/sentinel-hub/internal/config"
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	"github.com/zentinelproxy/zentinel-hub/internal/auth"
+	"github.com/zentinelproxy/zentinel-hub/internal/config"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -108,7 +108,7 @@ func NewServer(s *store.Store, port int, opts ...ServerOption) *Server {
 
 	// Register health service
 	healthServer := health.NewServer()
-	healthServer.SetServingStatus("sentinel.hub.v1.FleetService", grpc_health_v1.HealthCheckResponse_SERVING)
+	healthServer.SetServingStatus("zentinel.hub.v1.FleetService", grpc_health_v1.HealthCheckResponse_SERVING)
 	grpc_health_v1.RegisterHealthServer(grpcServer, healthServer)
 
 	// Enable reflection for debugging (consider disabling in production)

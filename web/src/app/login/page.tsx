@@ -80,9 +80,9 @@ export default function LoginPage() {
               <Shield className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Sentinel Hub</CardTitle>
+          <CardTitle className="text-2xl font-bold">Zentinel Hub</CardTitle>
           <CardDescription>
-            Sign in to manage your Sentinel fleet
+            Sign in to manage your Zentinel fleet
           </CardDescription>
         </CardHeader>
         <CardContent>

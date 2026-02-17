@@ -6,13 +6,13 @@ import (
 	"time"
 )
 
-// Instance represents a Sentinel proxy instance in the fleet.
+// Instance represents a Zentinel proxy instance in the fleet.
 type Instance struct {
 	ID                   string            `json:"id"`
 	Name                 string            `json:"name"`
 	Hostname             string            `json:"hostname"`
 	AgentVersion         string            `json:"agent_version"`
-	SentinelVersion      string            `json:"sentinel_version"`
+	ZentinelVersion      string            `json:"zentinel_version"`
 	Status               InstanceStatus    `json:"status"`
 	LastSeenAt           *time.Time        `json:"last_seen_at,omitempty"`
 	CurrentConfigID      *string           `json:"current_config_id,omitempty"`
@@ -35,7 +35,7 @@ const (
 	InstanceStatusDraining  InstanceStatus = "draining"
 )
 
-// Config represents a Sentinel configuration.
+// Config represents a Zentinel configuration.
 type Config struct {
 	ID             string     `json:"id"`
 	Name           string     `json:"name"`

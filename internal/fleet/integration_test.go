@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	hubgrpc "github.com/raskell-io/sentinel-hub/internal/grpc"
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	hubgrpc "github.com/zentinelproxy/zentinel-hub/internal/grpc"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 )
 
 // ============================================
@@ -89,7 +89,7 @@ func simulateAgentSubscriptionWithLabels(t *testing.T, fs *hubgrpc.FleetService,
 		InstanceName:    instanceID,
 		Hostname:        instanceID + ".local",
 		AgentVersion:    "1.0.0",
-		SentinelVersion: "1.0.0",
+		ZentinelVersion: "1.0.0",
 		Labels:          labels,
 	})
 	if err != nil {

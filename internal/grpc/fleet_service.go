@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -111,7 +111,7 @@ func (s *FleetService) Register(ctx context.Context, req *pb.RegisterRequest) (*
 		// Update existing instance
 		existing.Hostname = req.Hostname
 		existing.AgentVersion = req.AgentVersion
-		existing.SentinelVersion = req.SentinelVersion
+		existing.ZentinelVersion = req.ZentinelVersion
 		existing.Status = store.InstanceStatusOnline
 		existing.LastSeenAt = &now
 		existing.Labels = req.Labels
@@ -128,7 +128,7 @@ func (s *FleetService) Register(ctx context.Context, req *pb.RegisterRequest) (*
 			Name:            req.InstanceName,
 			Hostname:        req.Hostname,
 			AgentVersion:    req.AgentVersion,
-			SentinelVersion: req.SentinelVersion,
+			ZentinelVersion: req.ZentinelVersion,
 			Status:          store.InstanceStatusOnline,
 			LastSeenAt:      &now,
 			Labels:          req.Labels,

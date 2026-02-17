@@ -71,7 +71,7 @@ export default function DeploymentsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Deployments</h1>
           <p className="text-muted-foreground">
-            Deploy configurations to your Sentinel fleet
+            Deploy configurations to your Zentinel fleet
           </p>
         </div>
         <div className="flex items-center gap-2">

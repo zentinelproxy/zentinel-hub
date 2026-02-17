@@ -1,4 +1,4 @@
-# Sentinel Hub Roadmap
+# Zentinel Hub Roadmap
 
 **Last Updated:** 2025-12-31
 **Current Version:** 0.0.0 (pre-alpha)
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Sentinel Hub is the fleet management control plane for Sentinel reverse proxies. It provides centralized configuration management, deployment orchestration, and observability for Sentinel instances across environments.
+Zentinel Hub is the fleet management control plane for Zentinel reverse proxies. It provides centralized configuration management, deployment orchestration, and observability for Zentinel instances across environments.
 
 This roadmap outlines the path from initial scaffolding to production-ready fleet management platform.
 
@@ -96,7 +96,7 @@ This roadmap outlines the path from initial scaffolding to production-ready flee
 
 ## Phase 3 — Agent Communication
 
-**Goal:** Enable Sentinel agents to communicate with Hub.
+**Goal:** Enable Zentinel agents to communicate with Hub.
 
 **Deliverables:**
 - [ ] gRPC service definition
@@ -111,7 +111,7 @@ This roadmap outlines the path from initial scaffolding to production-ready flee
 - [ ] Agent implementation
   - [ ] gRPC client
   - [ ] Configuration file watcher
-  - [ ] SIGHUP trigger for Sentinel
+  - [ ] SIGHUP trigger for Zentinel
   - [ ] Health check reporting
 - [ ] Instance status tracking
   - [ ] Online/offline detection

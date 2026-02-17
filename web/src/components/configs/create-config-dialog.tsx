@@ -40,7 +40,7 @@ const createConfigSchema = z.object({
 
 type CreateConfigFormValues = z.infer<typeof createConfigSchema>;
 
-const DEFAULT_CONFIG = `// Sentinel proxy configuration
+const DEFAULT_CONFIG = `// Zentinel proxy configuration
 server {
     listen 8080
 }
@@ -113,7 +113,7 @@ export function CreateConfigDialog({ open, onOpenChange }: CreateConfigDialogPro
         <DialogHeader>
           <DialogTitle>Create Configuration</DialogTitle>
           <DialogDescription>
-            Create a new KDL configuration file for your Sentinel proxies.
+            Create a new KDL configuration file for your Zentinel proxies.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

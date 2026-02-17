@@ -309,9 +309,9 @@ export default function InstanceDetailPage({ params }: PageProps) {
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
-                  Sentinel Version
+                  Zentinel Version
                 </p>
-                <p>{instance.sentinelVersion}</p>
+                <p>{instance.zentinelVersion}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">

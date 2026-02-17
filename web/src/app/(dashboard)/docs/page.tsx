@@ -25,7 +25,7 @@ const apiEndpoints = [
     category: "Instances",
     icon: Server,
     endpoints: [
-      { method: "GET", path: "/api/v1/instances", description: "List all Sentinel instances" },
+      { method: "GET", path: "/api/v1/instances", description: "List all Zentinel instances" },
       { method: "GET", path: "/api/v1/instances/:id", description: "Get instance details" },
       { method: "GET", path: "/api/v1/instances/:id/metrics", description: "Get instance metrics" },
     ],
@@ -108,7 +108,7 @@ export default function DocsPage() {
           API Documentation
         </h1>
         <p className="text-muted-foreground">
-          REST API reference for Sentinel Hub
+          REST API reference for Zentinel Hub
         </p>
       </div>
 
@@ -117,7 +117,7 @@ export default function DocsPage() {
         <CardHeader>
           <CardTitle>Overview</CardTitle>
           <CardDescription>
-            Getting started with the Sentinel Hub API
+            Getting started with the Zentinel Hub API
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -197,7 +197,7 @@ export default function DocsPage() {
             gRPC API (Agent Communication)
           </CardTitle>
           <CardDescription>
-            gRPC service for Sentinel agent communication
+            gRPC service for Zentinel agent communication
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

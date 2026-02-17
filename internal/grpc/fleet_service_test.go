@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 )
 
 // setupTestStore creates a temporary SQLite store for testing.
@@ -137,7 +137,7 @@ func TestFleetService_Register_NewInstance(t *testing.T) {
 		InstanceName:    "test-instance",
 		Hostname:        "test.local",
 		AgentVersion:    "1.0.0",
-		SentinelVersion: "2.0.0",
+		ZentinelVersion: "2.0.0",
 		Labels:          map[string]string{"env": "test"},
 		Capabilities:    []string{"config-reload"},
 	}

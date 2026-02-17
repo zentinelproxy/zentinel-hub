@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/raskell-io/sentinel-hub/internal/store"
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 )
 
 func TestNewDeploymentRunner(t *testing.T) {

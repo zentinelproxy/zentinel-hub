@@ -19,21 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	FleetService_Register_FullMethodName               = "/sentinel.hub.v1.FleetService/Register"
-	FleetService_Heartbeat_FullMethodName              = "/sentinel.hub.v1.FleetService/Heartbeat"
-	FleetService_Deregister_FullMethodName             = "/sentinel.hub.v1.FleetService/Deregister"
-	FleetService_GetConfig_FullMethodName              = "/sentinel.hub.v1.FleetService/GetConfig"
-	FleetService_GetConfigVersion_FullMethodName       = "/sentinel.hub.v1.FleetService/GetConfigVersion"
-	FleetService_Subscribe_FullMethodName              = "/sentinel.hub.v1.FleetService/Subscribe"
-	FleetService_AckDeployment_FullMethodName          = "/sentinel.hub.v1.FleetService/AckDeployment"
-	FleetService_ReportDeploymentStatus_FullMethodName = "/sentinel.hub.v1.FleetService/ReportDeploymentStatus"
+	FleetService_Register_FullMethodName               = "/zentinel.hub.v1.FleetService/Register"
+	FleetService_Heartbeat_FullMethodName              = "/zentinel.hub.v1.FleetService/Heartbeat"
+	FleetService_Deregister_FullMethodName             = "/zentinel.hub.v1.FleetService/Deregister"
+	FleetService_GetConfig_FullMethodName              = "/zentinel.hub.v1.FleetService/GetConfig"
+	FleetService_GetConfigVersion_FullMethodName       = "/zentinel.hub.v1.FleetService/GetConfigVersion"
+	FleetService_Subscribe_FullMethodName              = "/zentinel.hub.v1.FleetService/Subscribe"
+	FleetService_AckDeployment_FullMethodName          = "/zentinel.hub.v1.FleetService/AckDeployment"
+	FleetService_ReportDeploymentStatus_FullMethodName = "/zentinel.hub.v1.FleetService/ReportDeploymentStatus"
 )
 
 // FleetServiceClient is the client API for FleetService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// FleetService handles communication between Sentinel agents and the Hub.
+// FleetService handles communication between Zentinel agents and the Hub.
 // Uses a hybrid push/pull model: push for event notifications, pull for config fetching.
 type FleetServiceClient interface {
 	// Register a new agent with the Hub.
@@ -158,7 +158,7 @@ func (c *fleetServiceClient) ReportDeploymentStatus(ctx context.Context, in *Dep
 // All implementations must embed UnimplementedFleetServiceServer
 // for forward compatibility.
 //
-// FleetService handles communication between Sentinel agents and the Hub.
+// FleetService handles communication between Zentinel agents and the Hub.
 // Uses a hybrid push/pull model: push for event notifications, pull for config fetching.
 type FleetServiceServer interface {
 	// Register a new agent with the Hub.
@@ -376,7 +376,7 @@ func _FleetService_ReportDeploymentStatus_Handler(srv interface{}, ctx context.C
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var FleetService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "sentinel.hub.v1.FleetService",
+	ServiceName: "zentinel.hub.v1.FleetService",
 	HandlerType: (*FleetServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

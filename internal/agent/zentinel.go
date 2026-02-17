@@ -13,8 +13,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// SentinelManager handles interaction with the Sentinel proxy process.
-type SentinelManager struct {
+// ZentinelManager handles interaction with the Zentinel proxy process.
+type ZentinelManager struct {
 	configPath    string
 	pidFile       string
 	backupDir     string
@@ -22,27 +22,27 @@ type SentinelManager struct {
 	mu            sync.RWMutex
 }
 
-// NewSentinelManager creates a new SentinelManager.
-func NewSentinelManager(configPath string) *SentinelManager {
-	return &SentinelManager{
+// NewZentinelManager creates a new ZentinelManager.
+func NewZentinelManager(configPath string) *ZentinelManager {
+	return &ZentinelManager{
 		configPath: configPath,
-		pidFile:    "/var/run/sentinel.pid",
+		pidFile:    "/var/run/zentinel.pid",
 		backupDir:  filepath.Dir(configPath),
 	}
 }
 
 // SetPIDFile sets a custom PID file path.
-func (s *SentinelManager) SetPIDFile(path string) {
+func (s *ZentinelManager) SetPIDFile(path string) {
 	s.pidFile = path
 }
 
 // SetBackupDir sets a custom backup directory.
-func (s *SentinelManager) SetBackupDir(path string) {
+func (s *ZentinelManager) SetBackupDir(path string) {
 	s.backupDir = path
 }
 
 // ReadCurrentConfig reads the current config from disk.
-func (s *SentinelManager) ReadCurrentConfig() (string, error) {
+func (s *ZentinelManager) ReadCurrentConfig() (string, error) {
 	content, err := os.ReadFile(s.configPath)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -57,7 +57,7 @@ func (s *SentinelManager) ReadCurrentConfig() (string, error) {
 }
 
 // WriteConfig writes a new config to disk with backup.
-func (s *SentinelManager) WriteConfig(content string) error {
+func (s *ZentinelManager) WriteConfig(content string) error {
 	// Create backup of current config if it exists
 	if _, err := os.Stat(s.configPath); err == nil {
 		backupPath := filepath.Join(s.backupDir, fmt.Sprintf("config.kdl.bak"))
@@ -92,14 +92,14 @@ func (s *SentinelManager) WriteConfig(content string) error {
 	return nil
 }
 
-// Reload sends SIGHUP to the Sentinel process to trigger a config reload.
-func (s *SentinelManager) Reload() error {
-	pid, err := s.getSentinelPID()
+// Reload sends SIGHUP to the Zentinel process to trigger a config reload.
+func (s *ZentinelManager) Reload() error {
+	pid, err := s.getZentinelPID()
 	if err != nil {
-		return fmt.Errorf("failed to get Sentinel PID: %w", err)
+		return fmt.Errorf("failed to get Zentinel PID: %w", err)
 	}
 
-	log.Info().Int("pid", pid).Msg("Sending SIGHUP to Sentinel...")
+	log.Info().Int("pid", pid).Msg("Sending SIGHUP to Zentinel...")
 
 	process, err := os.FindProcess(pid)
 	if err != nil {
@@ -115,7 +115,7 @@ func (s *SentinelManager) Reload() error {
 }
 
 // Rollback restores the backup config.
-func (s *SentinelManager) Rollback() error {
+func (s *ZentinelManager) Rollback() error {
 	backupPath := filepath.Join(s.backupDir, "config.kdl.bak")
 	if _, err := os.Stat(backupPath); os.IsNotExist(err) {
 		return fmt.Errorf("no backup config found")
@@ -137,8 +137,8 @@ func (s *SentinelManager) Rollback() error {
 	return nil
 }
 
-// getSentinelPID finds the PID of the running Sentinel process.
-func (s *SentinelManager) getSentinelPID() (int, error) {
+// getZentinelPID finds the PID of the running Zentinel process.
+func (s *ZentinelManager) getZentinelPID() (int, error) {
 	// Try PID file first
 	if s.pidFile != "" {
 		if content, err := os.ReadFile(s.pidFile); err == nil {
@@ -155,20 +155,20 @@ func (s *SentinelManager) getSentinelPID() (int, error) {
 	}
 
 	// Fall back to pgrep
-	cmd := exec.Command("pgrep", "-x", "sentinel")
+	cmd := exec.Command("pgrep", "-x", "zentinel")
 	output, err := cmd.Output()
 	if err != nil {
 		// Try alternative names
-		cmd = exec.Command("pgrep", "-f", "sentinel-proxy")
+		cmd = exec.Command("pgrep", "-f", "zentinel-proxy")
 		output, err = cmd.Output()
 		if err != nil {
-			return 0, fmt.Errorf("sentinel process not found")
+			return 0, fmt.Errorf("zentinel process not found")
 		}
 	}
 
 	lines := strings.Split(strings.TrimSpace(string(output)), "\n")
 	if len(lines) == 0 || lines[0] == "" {
-		return 0, fmt.Errorf("sentinel process not found")
+		return 0, fmt.Errorf("zentinel process not found")
 	}
 
 	pid, err := strconv.Atoi(lines[0])
@@ -180,7 +180,7 @@ func (s *SentinelManager) getSentinelPID() (int, error) {
 }
 
 // copyFile copies a file from src to dst.
-func (s *SentinelManager) copyFile(src, dst string) error {
+func (s *ZentinelManager) copyFile(src, dst string) error {
 	content, err := os.ReadFile(src)
 	if err != nil {
 		return err
@@ -188,9 +188,9 @@ func (s *SentinelManager) copyFile(src, dst string) error {
 	return os.WriteFile(dst, content, 0644)
 }
 
-// CheckHealth checks if Sentinel is running and healthy.
-func (s *SentinelManager) CheckHealth() error {
-	pid, err := s.getSentinelPID()
+// CheckHealth checks if Zentinel is running and healthy.
+func (s *ZentinelManager) CheckHealth() error {
+	pid, err := s.getZentinelPID()
 	if err != nil {
 		return err
 	}
@@ -208,18 +208,18 @@ func (s *SentinelManager) CheckHealth() error {
 	return nil
 }
 
-// IsRunning returns true if Sentinel is running.
-func (s *SentinelManager) IsRunning() bool {
+// IsRunning returns true if Zentinel is running.
+func (s *ZentinelManager) IsRunning() bool {
 	return s.CheckHealth() == nil
 }
 
 // GetConfigPath returns the config file path.
-func (s *SentinelManager) GetConfigPath() string {
+func (s *ZentinelManager) GetConfigPath() string {
 	return s.configPath
 }
 
 // GetCurrentConfig returns the current config content.
-func (s *SentinelManager) GetCurrentConfig() string {
+func (s *ZentinelManager) GetCurrentConfig() string {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.currentConfig

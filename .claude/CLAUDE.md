@@ -1,18 +1,18 @@
-# Sentinel Hub — Fleet Management Control Plane
+# Zentinel Hub — Fleet Management Control Plane
 
-**Tagline:** Centralized management for Sentinel proxy fleets. Configure, deploy, observe.
+**Tagline:** Centralized management for Zentinel proxy fleets. Configure, deploy, observe.
 
 ---
 
 ## 0) Purpose of this document
-This file is a single source of truth for LLM agents and humans implementing a fleet management control plane for Sentinel reverse proxies. We are building a production-grade operations platform that enables teams to manage configurations, deployments, and observability across multiple Sentinel instances.
+This file is a single source of truth for LLM agents and humans implementing a fleet management control plane for Zentinel reverse proxies. We are building a production-grade operations platform that enables teams to manage configurations, deployments, and observability across multiple Zentinel instances.
 
 This document prioritizes: **operational simplicity**, **security**, **scalability**, and **developer experience**.
 
 ---
 
 ## 1) North Star
-Build a control plane that makes operating Sentinel fleets boring (in a good way):
+Build a control plane that makes operating Zentinel fleets boring (in a good way):
 
 - **Centralized configuration management** with validation, versioning, and rollback.
 - **Fleet-wide visibility** into health, metrics, and configuration drift.
@@ -40,7 +40,7 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
 ### 2.3 Scalability
 - Stateless API servers (horizontal scaling).
 - Efficient agent polling or push-based updates.
-- Support for 1000+ managed Sentinel instances.
+- Support for 1000+ managed Zentinel instances.
 - Lazy loading and pagination for large datasets.
 
 ### 2.4 Developer Experience
@@ -55,10 +55,10 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
 ## 3) Target Outcomes
 
 ### 3.1 Must-have outcomes (v1.0)
-- Configuration CRUD with validation against Sentinel's KDL schema.
+- Configuration CRUD with validation against Zentinel's KDL schema.
 - Configuration versioning with diff view and rollback.
 - Fleet inventory with health status and metadata.
-- Configuration push to Sentinel instances (via agent).
+- Configuration push to Zentinel instances (via agent).
 - Basic metrics dashboard (requests, errors, latency).
 - User authentication (local + OIDC).
 - Audit log for all changes.
@@ -82,7 +82,7 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
 ## 4) Non-goals (explicit)
 - Replacing Kubernetes or other orchestrators for deployment.
 - Implementing a full observability stack (use Prometheus/Grafana).
-- Managing non-Sentinel infrastructure.
+- Managing non-Zentinel infrastructure.
 - Real-time log streaming (link to existing log aggregation).
 
 ---
@@ -93,7 +93,7 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
 
 1) **Hub API Server (Go)**
    - REST API for UI and external integrations.
-   - gRPC API for Sentinel agent communication.
+   - gRPC API for Zentinel agent communication.
    - Business logic for fleet management.
    - Handles authentication, authorization, audit logging.
 
@@ -102,12 +102,12 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
    - Real-time updates via WebSocket.
    - Responsive design for desktop and tablet.
 
-3) **Sentinel Agent (sidecar or standalone)**
-   - Runs alongside each Sentinel instance.
+3) **Zentinel Agent (sidecar or standalone)**
+   - Runs alongside each Zentinel instance.
    - Connects to Hub via gRPC.
    - Reports health, metrics, and current config.
    - Receives and applies configuration updates.
-   - Triggers graceful reload on Sentinel.
+   - Triggers graceful reload on Zentinel.
 
 4) **Data Store**
    - SQLite for single-node deployments.
@@ -137,7 +137,7 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
     └────┬────┘         └────┬────┘         └────┬────┘
          │                   │                   │
     ┌────┴────┐         ┌────┴────┐         ┌────┴────┐
-    │Sentinel │         │Sentinel │         │Sentinel │
+    │Zentinel │         │Zentinel │         │Zentinel │
     │Instance │         │Instance │         │Instance │
     └─────────┘         └─────────┘         └─────────┘
 ```
@@ -166,7 +166,7 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
 ### 6.3 Agent
 - **Language:** Go (shared code with Hub)
 - **Communication:** gRPC with mTLS
-- **Config reload:** SIGHUP to Sentinel process
+- **Config reload:** SIGHUP to Zentinel process
 
 ---
 
@@ -176,7 +176,7 @@ Build a control plane that makes operating Sentinel fleets boring (in a good way
 
 ```
 # Fleet Management
-GET    /api/v1/instances              # List all Sentinel instances
+GET    /api/v1/instances              # List all Zentinel instances
 GET    /api/v1/instances/:id          # Get instance details
 POST   /api/v1/instances              # Register new instance
 DELETE /api/v1/instances/:id          # Deregister instance
@@ -237,7 +237,7 @@ Instance
 ├── name (user-friendly name)
 ├── hostname
 ├── agent_version
-├── sentinel_version
+├── zentinel_version
 ├── status (online/offline/unhealthy)
 ├── last_seen_at
 ├── current_config_id
@@ -325,7 +325,7 @@ AuditLog
 
 ### 10.1 KDL Schema Validation
 - Parse and validate KDL syntax.
-- Validate against Sentinel's expected schema.
+- Validate against Zentinel's expected schema.
 - Check for common misconfigurations.
 - Provide helpful error messages with line numbers.
 
@@ -425,8 +425,8 @@ HUB_LOG_LEVEL=info               # debug, info, warn, error
 
 # Agent
 AGENT_HUB_URL=https://hub.example.com:9090
-AGENT_INSTANCE_NAME=sentinel-prod-1
-AGENT_SENTINEL_CONFIG=/etc/sentinel/config.kdl
+AGENT_INSTANCE_NAME=zentinel-prod-1
+AGENT_ZENTINEL_CONFIG=/etc/zentinel/config.kdl
 AGENT_TLS_CERT=/etc/agent/cert.pem
 AGENT_TLS_KEY=/etc/agent/key.pem
 ```

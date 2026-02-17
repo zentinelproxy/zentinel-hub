@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/raskell-io/sentinel-hub/internal/agent"
+	"github.com/zentinelproxy/zentinel-hub/internal/agent"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -43,7 +43,7 @@ func main() {
 
 	rootCmd := &cobra.Command{
 		Use:     "agent",
-		Short:   "Sentinel Hub Agent - Manages local Sentinel instance",
+		Short:   "Zentinel Hub Agent - Manages local Zentinel instance",
 		Version: fmt.Sprintf("%s (commit: %s, built: %s)", version, commit, date),
 	}
 
@@ -60,8 +60,8 @@ func runCmd() *cobra.Command {
 		hubURL          string
 		instanceID      string
 		instanceName    string
-		sentinelConfig  string
-		sentinelVersion string
+		zentinelConfig  string
+		zentinelVersion string
 		heartbeatSecs   int
 		labels          []string
 	)
@@ -70,15 +70,15 @@ func runCmd() *cobra.Command {
 		Use:   "run",
 		Short: "Run the agent",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runAgent(hubURL, instanceID, instanceName, sentinelConfig, sentinelVersion, heartbeatSecs, labels)
+			return runAgent(hubURL, instanceID, instanceName, zentinelConfig, zentinelVersion, heartbeatSecs, labels)
 		},
 	}
 
 	cmd.Flags().StringVar(&hubURL, "hub-url", "localhost:9090", "Hub gRPC server URL")
 	cmd.Flags().StringVar(&instanceID, "instance-id", "", "Instance ID (defaults to generated UUID)")
 	cmd.Flags().StringVar(&instanceName, "instance-name", "", "Instance name (defaults to hostname)")
-	cmd.Flags().StringVar(&sentinelConfig, "sentinel-config", "/etc/sentinel/config.kdl", "Path to Sentinel config file")
-	cmd.Flags().StringVar(&sentinelVersion, "sentinel-version", "unknown", "Sentinel version")
+	cmd.Flags().StringVar(&zentinelConfig, "zentinel-config", "/etc/zentinel/config.kdl", "Path to Zentinel config file")
+	cmd.Flags().StringVar(&zentinelVersion, "zentinel-version", "unknown", "Zentinel version")
 	cmd.Flags().IntVar(&heartbeatSecs, "heartbeat-interval", 30, "Heartbeat interval in seconds")
 	cmd.Flags().StringSliceVar(&labels, "label", nil, "Labels in key=value format (can be specified multiple times)")
 
@@ -90,14 +90,14 @@ func versionCmd() *cobra.Command {
 		Use:   "version",
 		Short: "Print version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Sentinel Hub Agent %s\n", version)
+			fmt.Printf("Zentinel Hub Agent %s\n", version)
 			fmt.Printf("  Commit: %s\n", commit)
 			fmt.Printf("  Built:  %s\n", date)
 		},
 	}
 }
 
-func runAgent(hubURL, instanceID, instanceName, sentinelConfig, sentinelVersion string, heartbeatSecs int, labelArgs []string) error {
+func runAgent(hubURL, instanceID, instanceName, zentinelConfig, zentinelVersion string, heartbeatSecs int, labelArgs []string) error {
 	// Default instance ID to UUID
 	if instanceID == "" {
 		instanceID = uuid.New().String()
@@ -125,21 +125,21 @@ func runAgent(hubURL, instanceID, instanceName, sentinelConfig, sentinelVersion 
 		Str("hub_url", hubURL).
 		Str("instance_id", instanceID).
 		Str("instance_name", instanceName).
-		Str("sentinel_config", sentinelConfig).
-		Str("sentinel_version", sentinelVersion).
+		Str("zentinel_config", zentinelConfig).
+		Str("zentinel_version", zentinelVersion).
 		Int("heartbeat_interval", heartbeatSecs).
 		Interface("labels", labels).
-		Msg("Starting Sentinel Hub Agent")
+		Msg("Starting Zentinel Hub Agent")
 
 	// Create agent
 	ag, err := agent.New(agent.Config{
 		HubURL:            hubURL,
 		InstanceID:        instanceID,
 		InstanceName:      instanceName,
-		SentinelConfig:    sentinelConfig,
+		ZentinelConfig:    zentinelConfig,
 		HeartbeatInterval: time.Duration(heartbeatSecs) * time.Second,
 		AgentVersion:      version,
-		SentinelVersion:   sentinelVersion,
+		ZentinelVersion:   zentinelVersion,
 		Labels:            labels,
 	})
 	if err != nil {

@@ -307,8 +307,8 @@ type RegisterRequest struct {
 	Hostname string `protobuf:"bytes,3,opt,name=hostname,proto3" json:"hostname,omitempty"`
 	// Agent binary version.
 	AgentVersion string `protobuf:"bytes,4,opt,name=agent_version,json=agentVersion,proto3" json:"agent_version,omitempty"`
-	// Sentinel proxy version.
-	SentinelVersion string `protobuf:"bytes,5,opt,name=sentinel_version,json=sentinelVersion,proto3" json:"sentinel_version,omitempty"`
+	// Zentinel proxy version.
+	ZentinelVersion string `protobuf:"bytes,5,opt,name=zentinel_version,json=zentinelVersion,proto3" json:"zentinel_version,omitempty"`
 	// Custom labels for filtering and grouping.
 	Labels map[string]string `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Supported agent capabilities.
@@ -375,9 +375,9 @@ func (x *RegisterRequest) GetAgentVersion() string {
 	return ""
 }
 
-func (x *RegisterRequest) GetSentinelVersion() string {
+func (x *RegisterRequest) GetZentinelVersion() string {
 	if x != nil {
-		return x.SentinelVersion
+		return x.ZentinelVersion
 	}
 	return ""
 }
@@ -722,7 +722,7 @@ func (x *DeregisterResponse) GetAcknowledged() bool {
 
 type InstanceStatus struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	State InstanceState          `protobuf:"varint,1,opt,name=state,proto3,enum=sentinel.hub.v1.InstanceState" json:"state,omitempty"`
+	State InstanceState          `protobuf:"varint,1,opt,name=state,proto3,enum=zentinel.hub.v1.InstanceState" json:"state,omitempty"`
 	// Human-readable status message.
 	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	// Uptime in seconds.
@@ -1212,7 +1212,7 @@ func (x *SubscribeRequest) GetToken() string {
 type Event struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
 	EventId   string                 `protobuf:"bytes,1,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
-	Type      EventType              `protobuf:"varint,2,opt,name=type,proto3,enum=sentinel.hub.v1.EventType" json:"type,omitempty"`
+	Type      EventType              `protobuf:"varint,2,opt,name=type,proto3,enum=zentinel.hub.v1.EventType" json:"type,omitempty"`
 	Timestamp *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	// Types that are valid to be assigned to Payload:
 	//
@@ -1412,7 +1412,7 @@ type DeploymentEvent struct {
 	DeploymentId  string                 `protobuf:"bytes,1,opt,name=deployment_id,json=deploymentId,proto3" json:"deployment_id,omitempty"`
 	ConfigId      string                 `protobuf:"bytes,2,opt,name=config_id,json=configId,proto3" json:"config_id,omitempty"`
 	ConfigVersion string                 `protobuf:"bytes,3,opt,name=config_version,json=configVersion,proto3" json:"config_version,omitempty"`
-	Strategy      DeploymentStrategy     `protobuf:"varint,4,opt,name=strategy,proto3,enum=sentinel.hub.v1.DeploymentStrategy" json:"strategy,omitempty"`
+	Strategy      DeploymentStrategy     `protobuf:"varint,4,opt,name=strategy,proto3,enum=zentinel.hub.v1.DeploymentStrategy" json:"strategy,omitempty"`
 	// Position in rolling deployment (1-indexed).
 	BatchPosition int32 `protobuf:"varint,5,opt,name=batch_position,json=batchPosition,proto3" json:"batch_position,omitempty"`
 	// Total batches in deployment.
@@ -1744,7 +1744,7 @@ type DeploymentStatusRequest struct {
 	InstanceId   string                 `protobuf:"bytes,1,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 	Token        string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
 	DeploymentId string                 `protobuf:"bytes,3,opt,name=deployment_id,json=deploymentId,proto3" json:"deployment_id,omitempty"`
-	State        DeploymentState        `protobuf:"varint,4,opt,name=state,proto3,enum=sentinel.hub.v1.DeploymentState" json:"state,omitempty"`
+	State        DeploymentState        `protobuf:"varint,4,opt,name=state,proto3,enum=zentinel.hub.v1.DeploymentState" json:"state,omitempty"`
 	Message      string                 `protobuf:"bytes,5,opt,name=message,proto3" json:"message,omitempty"`
 	// Error details if failed.
 	ErrorDetails  string `protobuf:"bytes,6,opt,name=error_details,json=errorDetails,proto3" json:"error_details,omitempty"`
@@ -1879,7 +1879,7 @@ func (x *DeploymentStatusResponse) GetNextAction() string {
 
 type PendingAction struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Type          ActionType             `protobuf:"varint,1,opt,name=type,proto3,enum=sentinel.hub.v1.ActionType" json:"type,omitempty"`
+	Type          ActionType             `protobuf:"varint,1,opt,name=type,proto3,enum=zentinel.hub.v1.ActionType" json:"type,omitempty"`
 	ActionId      string                 `protobuf:"bytes,2,opt,name=action_id,json=actionId,proto3" json:"action_id,omitempty"`
 	Params        map[string]string      `protobuf:"bytes,3,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
@@ -1941,15 +1941,15 @@ var File_fleet_proto protoreflect.FileDescriptor
 
 const file_fleet_proto_rawDesc = "" +
 	"\n" +
-	"\vfleet.proto\x12\x0fsentinel.hub.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe8\x02\n" +
+	"\vfleet.proto\x12\x0fzentinel.hub.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe8\x02\n" +
 	"\x0fRegisterRequest\x12\x1f\n" +
 	"\vinstance_id\x18\x01 \x01(\tR\n" +
 	"instanceId\x12#\n" +
 	"\rinstance_name\x18\x02 \x01(\tR\finstanceName\x12\x1a\n" +
 	"\bhostname\x18\x03 \x01(\tR\bhostname\x12#\n" +
 	"\ragent_version\x18\x04 \x01(\tR\fagentVersion\x12)\n" +
-	"\x10sentinel_version\x18\x05 \x01(\tR\x0fsentinelVersion\x12D\n" +
-	"\x06labels\x18\x06 \x03(\v2,.sentinel.hub.v1.RegisterRequest.LabelsEntryR\x06labels\x12\"\n" +
+	"\x10zentinel_version\x18\x05 \x01(\tR\x0fzentinelVersion\x12D\n" +
+	"\x06labels\x18\x06 \x03(\v2,.zentinel.hub.v1.RegisterRequest.LabelsEntryR\x06labels\x12\"\n" +
 	"\fcapabilities\x18\a \x03(\tR\fcapabilities\x1a9\n" +
 	"\vLabelsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -1964,14 +1964,14 @@ const file_fleet_proto_rawDesc = "" +
 	"\vinstance_id\x18\x01 \x01(\tR\n" +
 	"instanceId\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\x127\n" +
-	"\x06status\x18\x03 \x01(\v2\x1f.sentinel.hub.v1.InstanceStatusR\x06status\x124\n" +
+	"\x06status\x18\x03 \x01(\v2\x1f.zentinel.hub.v1.InstanceStatusR\x06status\x124\n" +
 	"\x16current_config_version\x18\x04 \x01(\tR\x14currentConfigVersion\x12.\n" +
 	"\x13current_config_hash\x18\x05 \x01(\tR\x11currentConfigHash\x12:\n" +
-	"\ametrics\x18\x06 \x01(\v2 .sentinel.hub.v1.InstanceMetricsR\ametrics\"\xb9\x01\n" +
+	"\ametrics\x18\x06 \x01(\v2 .zentinel.hub.v1.InstanceMetricsR\ametrics\"\xb9\x01\n" +
 	"\x11HeartbeatResponse\x126\n" +
 	"\x17config_update_available\x18\x01 \x01(\bR\x15configUpdateAvailable\x122\n" +
 	"\x15latest_config_version\x18\x02 \x01(\tR\x13latestConfigVersion\x128\n" +
-	"\aactions\x18\x03 \x03(\v2\x1e.sentinel.hub.v1.PendingActionR\aactions\"b\n" +
+	"\aactions\x18\x03 \x03(\v2\x1e.zentinel.hub.v1.PendingActionR\aactions\"b\n" +
 	"\x11DeregisterRequest\x12\x1f\n" +
 	"\vinstance_id\x18\x01 \x01(\tR\n" +
 	"instanceId\x12\x14\n" +
@@ -1980,7 +1980,7 @@ const file_fleet_proto_rawDesc = "" +
 	"\x12DeregisterResponse\x12\"\n" +
 	"\facknowledged\x18\x01 \x01(\bR\facknowledged\"\xb6\x01\n" +
 	"\x0eInstanceStatus\x124\n" +
-	"\x05state\x18\x01 \x01(\x0e2\x1e.sentinel.hub.v1.InstanceStateR\x05state\x12\x18\n" +
+	"\x05state\x18\x01 \x01(\x0e2\x1e.zentinel.hub.v1.InstanceStateR\x05state\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
 	"\x0euptime_seconds\x18\x03 \x01(\x03R\ruptimeSeconds\x12-\n" +
 	"\x12active_connections\x18\x04 \x01(\x05R\x11activeConnections\"\xf3\x01\n" +
@@ -2023,14 +2023,14 @@ const file_fleet_proto_rawDesc = "" +
 	"\x05token\x18\x02 \x01(\tR\x05token\"\x8d\x03\n" +
 	"\x05Event\x12\x19\n" +
 	"\bevent_id\x18\x01 \x01(\tR\aeventId\x12.\n" +
-	"\x04type\x18\x02 \x01(\x0e2\x1a.sentinel.hub.v1.EventTypeR\x04type\x128\n" +
+	"\x04type\x18\x02 \x01(\x0e2\x1a.zentinel.hub.v1.EventTypeR\x04type\x128\n" +
 	"\ttimestamp\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12I\n" +
-	"\rconfig_update\x18\x04 \x01(\v2\".sentinel.hub.v1.ConfigUpdateEventH\x00R\fconfigUpdate\x12B\n" +
+	"\rconfig_update\x18\x04 \x01(\v2\".zentinel.hub.v1.ConfigUpdateEventH\x00R\fconfigUpdate\x12B\n" +
 	"\n" +
-	"deployment\x18\x05 \x01(\v2 .sentinel.hub.v1.DeploymentEventH\x00R\n" +
+	"deployment\x18\x05 \x01(\v2 .zentinel.hub.v1.DeploymentEventH\x00R\n" +
 	"deployment\x123\n" +
-	"\x05drain\x18\x06 \x01(\v2\x1b.sentinel.hub.v1.DrainEventH\x00R\x05drain\x120\n" +
-	"\x04ping\x18\a \x01(\v2\x1a.sentinel.hub.v1.PingEventH\x00R\x04pingB\t\n" +
+	"\x05drain\x18\x06 \x01(\v2\x1b.zentinel.hub.v1.DrainEventH\x00R\x05drain\x120\n" +
+	"\x04ping\x18\a \x01(\v2\x1a.zentinel.hub.v1.PingEventH\x00R\x04pingB\t\n" +
 	"\apayload\"\x82\x01\n" +
 	"\x11ConfigUpdateEvent\x12%\n" +
 	"\x0econfig_version\x18\x01 \x01(\tR\rconfigVersion\x12\x1f\n" +
@@ -2041,7 +2041,7 @@ const file_fleet_proto_rawDesc = "" +
 	"\rdeployment_id\x18\x01 \x01(\tR\fdeploymentId\x12\x1b\n" +
 	"\tconfig_id\x18\x02 \x01(\tR\bconfigId\x12%\n" +
 	"\x0econfig_version\x18\x03 \x01(\tR\rconfigVersion\x12?\n" +
-	"\bstrategy\x18\x04 \x01(\x0e2#.sentinel.hub.v1.DeploymentStrategyR\bstrategy\x12%\n" +
+	"\bstrategy\x18\x04 \x01(\x0e2#.zentinel.hub.v1.DeploymentStrategyR\bstrategy\x12%\n" +
 	"\x0ebatch_position\x18\x05 \x01(\x05R\rbatchPosition\x12\x1f\n" +
 	"\vbatch_total\x18\x06 \x01(\x05R\n" +
 	"batchTotal\x126\n" +
@@ -2070,7 +2070,7 @@ const file_fleet_proto_rawDesc = "" +
 	"instanceId\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\x12#\n" +
 	"\rdeployment_id\x18\x03 \x01(\tR\fdeploymentId\x126\n" +
-	"\x05state\x18\x04 \x01(\x0e2 .sentinel.hub.v1.DeploymentStateR\x05state\x12\x18\n" +
+	"\x05state\x18\x04 \x01(\x0e2 .zentinel.hub.v1.DeploymentStateR\x05state\x12\x18\n" +
 	"\amessage\x18\x05 \x01(\tR\amessage\x12#\n" +
 	"\rerror_details\x18\x06 \x01(\tR\ferrorDetails\"_\n" +
 	"\x18DeploymentStatusResponse\x12\"\n" +
@@ -2078,9 +2078,9 @@ const file_fleet_proto_rawDesc = "" +
 	"\vnext_action\x18\x02 \x01(\tR\n" +
 	"nextAction\"\xdc\x01\n" +
 	"\rPendingAction\x12/\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x1b.sentinel.hub.v1.ActionTypeR\x04type\x12\x1b\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x1b.zentinel.hub.v1.ActionTypeR\x04type\x12\x1b\n" +
 	"\taction_id\x18\x02 \x01(\tR\bactionId\x12B\n" +
-	"\x06params\x18\x03 \x03(\v2*.sentinel.hub.v1.PendingAction.ParamsEntryR\x06params\x1a9\n" +
+	"\x06params\x18\x03 \x03(\v2*.zentinel.hub.v1.PendingAction.ParamsEntryR\x06params\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\x82\x01\n" +
@@ -2116,15 +2116,15 @@ const file_fleet_proto_rawDesc = "" +
 	"\x19ACTION_TYPE_REPORT_STATUS\x10\x03\x12\x15\n" +
 	"\x11ACTION_TYPE_DRAIN\x10\x042\xe0\x05\n" +
 	"\fFleetService\x12O\n" +
-	"\bRegister\x12 .sentinel.hub.v1.RegisterRequest\x1a!.sentinel.hub.v1.RegisterResponse\x12R\n" +
-	"\tHeartbeat\x12!.sentinel.hub.v1.HeartbeatRequest\x1a\".sentinel.hub.v1.HeartbeatResponse\x12U\n" +
+	"\bRegister\x12 .zentinel.hub.v1.RegisterRequest\x1a!.zentinel.hub.v1.RegisterResponse\x12R\n" +
+	"\tHeartbeat\x12!.zentinel.hub.v1.HeartbeatRequest\x1a\".zentinel.hub.v1.HeartbeatResponse\x12U\n" +
 	"\n" +
-	"Deregister\x12\".sentinel.hub.v1.DeregisterRequest\x1a#.sentinel.hub.v1.DeregisterResponse\x12R\n" +
-	"\tGetConfig\x12!.sentinel.hub.v1.GetConfigRequest\x1a\".sentinel.hub.v1.GetConfigResponse\x12g\n" +
-	"\x10GetConfigVersion\x12(.sentinel.hub.v1.GetConfigVersionRequest\x1a).sentinel.hub.v1.GetConfigVersionResponse\x12H\n" +
-	"\tSubscribe\x12!.sentinel.hub.v1.SubscribeRequest\x1a\x16.sentinel.hub.v1.Event0\x01\x12^\n" +
-	"\rAckDeployment\x12%.sentinel.hub.v1.AckDeploymentRequest\x1a&.sentinel.hub.v1.AckDeploymentResponse\x12m\n" +
-	"\x16ReportDeploymentStatus\x12(.sentinel.hub.v1.DeploymentStatusRequest\x1a).sentinel.hub.v1.DeploymentStatusResponseB.Z,github.com/raskell-io/sentinel-hub/pkg/hubpbb\x06proto3"
+	"Deregister\x12\".zentinel.hub.v1.DeregisterRequest\x1a#.zentinel.hub.v1.DeregisterResponse\x12R\n" +
+	"\tGetConfig\x12!.zentinel.hub.v1.GetConfigRequest\x1a\".zentinel.hub.v1.GetConfigResponse\x12g\n" +
+	"\x10GetConfigVersion\x12(.zentinel.hub.v1.GetConfigVersionRequest\x1a).zentinel.hub.v1.GetConfigVersionResponse\x12H\n" +
+	"\tSubscribe\x12!.zentinel.hub.v1.SubscribeRequest\x1a\x16.zentinel.hub.v1.Event0\x01\x12^\n" +
+	"\rAckDeployment\x12%.zentinel.hub.v1.AckDeploymentRequest\x1a&.zentinel.hub.v1.AckDeploymentResponse\x12m\n" +
+	"\x16ReportDeploymentStatus\x12(.zentinel.hub.v1.DeploymentStatusRequest\x1a).zentinel.hub.v1.DeploymentStatusResponseB.Z,github.com/zentinelproxy/zentinel-hub/pkg/hubpbb\x06proto3"
 
 var (
 	file_fleet_proto_rawDescOnce sync.Once
@@ -2141,74 +2141,74 @@ func file_fleet_proto_rawDescGZIP() []byte {
 var file_fleet_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_fleet_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_fleet_proto_goTypes = []any{
-	(InstanceState)(0),               // 0: sentinel.hub.v1.InstanceState
-	(EventType)(0),                   // 1: sentinel.hub.v1.EventType
-	(DeploymentStrategy)(0),          // 2: sentinel.hub.v1.DeploymentStrategy
-	(DeploymentState)(0),             // 3: sentinel.hub.v1.DeploymentState
-	(ActionType)(0),                  // 4: sentinel.hub.v1.ActionType
-	(*RegisterRequest)(nil),          // 5: sentinel.hub.v1.RegisterRequest
-	(*RegisterResponse)(nil),         // 6: sentinel.hub.v1.RegisterResponse
-	(*HeartbeatRequest)(nil),         // 7: sentinel.hub.v1.HeartbeatRequest
-	(*HeartbeatResponse)(nil),        // 8: sentinel.hub.v1.HeartbeatResponse
-	(*DeregisterRequest)(nil),        // 9: sentinel.hub.v1.DeregisterRequest
-	(*DeregisterResponse)(nil),       // 10: sentinel.hub.v1.DeregisterResponse
-	(*InstanceStatus)(nil),           // 11: sentinel.hub.v1.InstanceStatus
-	(*InstanceMetrics)(nil),          // 12: sentinel.hub.v1.InstanceMetrics
-	(*GetConfigRequest)(nil),         // 13: sentinel.hub.v1.GetConfigRequest
-	(*GetConfigResponse)(nil),        // 14: sentinel.hub.v1.GetConfigResponse
-	(*GetConfigVersionRequest)(nil),  // 15: sentinel.hub.v1.GetConfigVersionRequest
-	(*GetConfigVersionResponse)(nil), // 16: sentinel.hub.v1.GetConfigVersionResponse
-	(*SubscribeRequest)(nil),         // 17: sentinel.hub.v1.SubscribeRequest
-	(*Event)(nil),                    // 18: sentinel.hub.v1.Event
-	(*ConfigUpdateEvent)(nil),        // 19: sentinel.hub.v1.ConfigUpdateEvent
-	(*DeploymentEvent)(nil),          // 20: sentinel.hub.v1.DeploymentEvent
-	(*DrainEvent)(nil),               // 21: sentinel.hub.v1.DrainEvent
-	(*PingEvent)(nil),                // 22: sentinel.hub.v1.PingEvent
-	(*AckDeploymentRequest)(nil),     // 23: sentinel.hub.v1.AckDeploymentRequest
-	(*AckDeploymentResponse)(nil),    // 24: sentinel.hub.v1.AckDeploymentResponse
-	(*DeploymentStatusRequest)(nil),  // 25: sentinel.hub.v1.DeploymentStatusRequest
-	(*DeploymentStatusResponse)(nil), // 26: sentinel.hub.v1.DeploymentStatusResponse
-	(*PendingAction)(nil),            // 27: sentinel.hub.v1.PendingAction
-	nil,                              // 28: sentinel.hub.v1.RegisterRequest.LabelsEntry
-	nil,                              // 29: sentinel.hub.v1.PendingAction.ParamsEntry
+	(InstanceState)(0),               // 0: zentinel.hub.v1.InstanceState
+	(EventType)(0),                   // 1: zentinel.hub.v1.EventType
+	(DeploymentStrategy)(0),          // 2: zentinel.hub.v1.DeploymentStrategy
+	(DeploymentState)(0),             // 3: zentinel.hub.v1.DeploymentState
+	(ActionType)(0),                  // 4: zentinel.hub.v1.ActionType
+	(*RegisterRequest)(nil),          // 5: zentinel.hub.v1.RegisterRequest
+	(*RegisterResponse)(nil),         // 6: zentinel.hub.v1.RegisterResponse
+	(*HeartbeatRequest)(nil),         // 7: zentinel.hub.v1.HeartbeatRequest
+	(*HeartbeatResponse)(nil),        // 8: zentinel.hub.v1.HeartbeatResponse
+	(*DeregisterRequest)(nil),        // 9: zentinel.hub.v1.DeregisterRequest
+	(*DeregisterResponse)(nil),       // 10: zentinel.hub.v1.DeregisterResponse
+	(*InstanceStatus)(nil),           // 11: zentinel.hub.v1.InstanceStatus
+	(*InstanceMetrics)(nil),          // 12: zentinel.hub.v1.InstanceMetrics
+	(*GetConfigRequest)(nil),         // 13: zentinel.hub.v1.GetConfigRequest
+	(*GetConfigResponse)(nil),        // 14: zentinel.hub.v1.GetConfigResponse
+	(*GetConfigVersionRequest)(nil),  // 15: zentinel.hub.v1.GetConfigVersionRequest
+	(*GetConfigVersionResponse)(nil), // 16: zentinel.hub.v1.GetConfigVersionResponse
+	(*SubscribeRequest)(nil),         // 17: zentinel.hub.v1.SubscribeRequest
+	(*Event)(nil),                    // 18: zentinel.hub.v1.Event
+	(*ConfigUpdateEvent)(nil),        // 19: zentinel.hub.v1.ConfigUpdateEvent
+	(*DeploymentEvent)(nil),          // 20: zentinel.hub.v1.DeploymentEvent
+	(*DrainEvent)(nil),               // 21: zentinel.hub.v1.DrainEvent
+	(*PingEvent)(nil),                // 22: zentinel.hub.v1.PingEvent
+	(*AckDeploymentRequest)(nil),     // 23: zentinel.hub.v1.AckDeploymentRequest
+	(*AckDeploymentResponse)(nil),    // 24: zentinel.hub.v1.AckDeploymentResponse
+	(*DeploymentStatusRequest)(nil),  // 25: zentinel.hub.v1.DeploymentStatusRequest
+	(*DeploymentStatusResponse)(nil), // 26: zentinel.hub.v1.DeploymentStatusResponse
+	(*PendingAction)(nil),            // 27: zentinel.hub.v1.PendingAction
+	nil,                              // 28: zentinel.hub.v1.RegisterRequest.LabelsEntry
+	nil,                              // 29: zentinel.hub.v1.PendingAction.ParamsEntry
 	(*timestamppb.Timestamp)(nil),    // 30: google.protobuf.Timestamp
 }
 var file_fleet_proto_depIdxs = []int32{
-	28, // 0: sentinel.hub.v1.RegisterRequest.labels:type_name -> sentinel.hub.v1.RegisterRequest.LabelsEntry
-	11, // 1: sentinel.hub.v1.HeartbeatRequest.status:type_name -> sentinel.hub.v1.InstanceStatus
-	12, // 2: sentinel.hub.v1.HeartbeatRequest.metrics:type_name -> sentinel.hub.v1.InstanceMetrics
-	27, // 3: sentinel.hub.v1.HeartbeatResponse.actions:type_name -> sentinel.hub.v1.PendingAction
-	0,  // 4: sentinel.hub.v1.InstanceStatus.state:type_name -> sentinel.hub.v1.InstanceState
-	30, // 5: sentinel.hub.v1.GetConfigResponse.created_at:type_name -> google.protobuf.Timestamp
-	30, // 6: sentinel.hub.v1.GetConfigVersionResponse.created_at:type_name -> google.protobuf.Timestamp
-	1,  // 7: sentinel.hub.v1.Event.type:type_name -> sentinel.hub.v1.EventType
-	30, // 8: sentinel.hub.v1.Event.timestamp:type_name -> google.protobuf.Timestamp
-	19, // 9: sentinel.hub.v1.Event.config_update:type_name -> sentinel.hub.v1.ConfigUpdateEvent
-	20, // 10: sentinel.hub.v1.Event.deployment:type_name -> sentinel.hub.v1.DeploymentEvent
-	21, // 11: sentinel.hub.v1.Event.drain:type_name -> sentinel.hub.v1.DrainEvent
-	22, // 12: sentinel.hub.v1.Event.ping:type_name -> sentinel.hub.v1.PingEvent
-	2,  // 13: sentinel.hub.v1.DeploymentEvent.strategy:type_name -> sentinel.hub.v1.DeploymentStrategy
-	30, // 14: sentinel.hub.v1.DeploymentEvent.deadline:type_name -> google.protobuf.Timestamp
-	30, // 15: sentinel.hub.v1.PingEvent.server_time:type_name -> google.protobuf.Timestamp
-	3,  // 16: sentinel.hub.v1.DeploymentStatusRequest.state:type_name -> sentinel.hub.v1.DeploymentState
-	4,  // 17: sentinel.hub.v1.PendingAction.type:type_name -> sentinel.hub.v1.ActionType
-	29, // 18: sentinel.hub.v1.PendingAction.params:type_name -> sentinel.hub.v1.PendingAction.ParamsEntry
-	5,  // 19: sentinel.hub.v1.FleetService.Register:input_type -> sentinel.hub.v1.RegisterRequest
-	7,  // 20: sentinel.hub.v1.FleetService.Heartbeat:input_type -> sentinel.hub.v1.HeartbeatRequest
-	9,  // 21: sentinel.hub.v1.FleetService.Deregister:input_type -> sentinel.hub.v1.DeregisterRequest
-	13, // 22: sentinel.hub.v1.FleetService.GetConfig:input_type -> sentinel.hub.v1.GetConfigRequest
-	15, // 23: sentinel.hub.v1.FleetService.GetConfigVersion:input_type -> sentinel.hub.v1.GetConfigVersionRequest
-	17, // 24: sentinel.hub.v1.FleetService.Subscribe:input_type -> sentinel.hub.v1.SubscribeRequest
-	23, // 25: sentinel.hub.v1.FleetService.AckDeployment:input_type -> sentinel.hub.v1.AckDeploymentRequest
-	25, // 26: sentinel.hub.v1.FleetService.ReportDeploymentStatus:input_type -> sentinel.hub.v1.DeploymentStatusRequest
-	6,  // 27: sentinel.hub.v1.FleetService.Register:output_type -> sentinel.hub.v1.RegisterResponse
-	8,  // 28: sentinel.hub.v1.FleetService.Heartbeat:output_type -> sentinel.hub.v1.HeartbeatResponse
-	10, // 29: sentinel.hub.v1.FleetService.Deregister:output_type -> sentinel.hub.v1.DeregisterResponse
-	14, // 30: sentinel.hub.v1.FleetService.GetConfig:output_type -> sentinel.hub.v1.GetConfigResponse
-	16, // 31: sentinel.hub.v1.FleetService.GetConfigVersion:output_type -> sentinel.hub.v1.GetConfigVersionResponse
-	18, // 32: sentinel.hub.v1.FleetService.Subscribe:output_type -> sentinel.hub.v1.Event
-	24, // 33: sentinel.hub.v1.FleetService.AckDeployment:output_type -> sentinel.hub.v1.AckDeploymentResponse
-	26, // 34: sentinel.hub.v1.FleetService.ReportDeploymentStatus:output_type -> sentinel.hub.v1.DeploymentStatusResponse
+	28, // 0: zentinel.hub.v1.RegisterRequest.labels:type_name -> zentinel.hub.v1.RegisterRequest.LabelsEntry
+	11, // 1: zentinel.hub.v1.HeartbeatRequest.status:type_name -> zentinel.hub.v1.InstanceStatus
+	12, // 2: zentinel.hub.v1.HeartbeatRequest.metrics:type_name -> zentinel.hub.v1.InstanceMetrics
+	27, // 3: zentinel.hub.v1.HeartbeatResponse.actions:type_name -> zentinel.hub.v1.PendingAction
+	0,  // 4: zentinel.hub.v1.InstanceStatus.state:type_name -> zentinel.hub.v1.InstanceState
+	30, // 5: zentinel.hub.v1.GetConfigResponse.created_at:type_name -> google.protobuf.Timestamp
+	30, // 6: zentinel.hub.v1.GetConfigVersionResponse.created_at:type_name -> google.protobuf.Timestamp
+	1,  // 7: zentinel.hub.v1.Event.type:type_name -> zentinel.hub.v1.EventType
+	30, // 8: zentinel.hub.v1.Event.timestamp:type_name -> google.protobuf.Timestamp
+	19, // 9: zentinel.hub.v1.Event.config_update:type_name -> zentinel.hub.v1.ConfigUpdateEvent
+	20, // 10: zentinel.hub.v1.Event.deployment:type_name -> zentinel.hub.v1.DeploymentEvent
+	21, // 11: zentinel.hub.v1.Event.drain:type_name -> zentinel.hub.v1.DrainEvent
+	22, // 12: zentinel.hub.v1.Event.ping:type_name -> zentinel.hub.v1.PingEvent
+	2,  // 13: zentinel.hub.v1.DeploymentEvent.strategy:type_name -> zentinel.hub.v1.DeploymentStrategy
+	30, // 14: zentinel.hub.v1.DeploymentEvent.deadline:type_name -> google.protobuf.Timestamp
+	30, // 15: zentinel.hub.v1.PingEvent.server_time:type_name -> google.protobuf.Timestamp
+	3,  // 16: zentinel.hub.v1.DeploymentStatusRequest.state:type_name -> zentinel.hub.v1.DeploymentState
+	4,  // 17: zentinel.hub.v1.PendingAction.type:type_name -> zentinel.hub.v1.ActionType
+	29, // 18: zentinel.hub.v1.PendingAction.params:type_name -> zentinel.hub.v1.PendingAction.ParamsEntry
+	5,  // 19: zentinel.hub.v1.FleetService.Register:input_type -> zentinel.hub.v1.RegisterRequest
+	7,  // 20: zentinel.hub.v1.FleetService.Heartbeat:input_type -> zentinel.hub.v1.HeartbeatRequest
+	9,  // 21: zentinel.hub.v1.FleetService.Deregister:input_type -> zentinel.hub.v1.DeregisterRequest
+	13, // 22: zentinel.hub.v1.FleetService.GetConfig:input_type -> zentinel.hub.v1.GetConfigRequest
+	15, // 23: zentinel.hub.v1.FleetService.GetConfigVersion:input_type -> zentinel.hub.v1.GetConfigVersionRequest
+	17, // 24: zentinel.hub.v1.FleetService.Subscribe:input_type -> zentinel.hub.v1.SubscribeRequest
+	23, // 25: zentinel.hub.v1.FleetService.AckDeployment:input_type -> zentinel.hub.v1.AckDeploymentRequest
+	25, // 26: zentinel.hub.v1.FleetService.ReportDeploymentStatus:input_type -> zentinel.hub.v1.DeploymentStatusRequest
+	6,  // 27: zentinel.hub.v1.FleetService.Register:output_type -> zentinel.hub.v1.RegisterResponse
+	8,  // 28: zentinel.hub.v1.FleetService.Heartbeat:output_type -> zentinel.hub.v1.HeartbeatResponse
+	10, // 29: zentinel.hub.v1.FleetService.Deregister:output_type -> zentinel.hub.v1.DeregisterResponse
+	14, // 30: zentinel.hub.v1.FleetService.GetConfig:output_type -> zentinel.hub.v1.GetConfigResponse
+	16, // 31: zentinel.hub.v1.FleetService.GetConfigVersion:output_type -> zentinel.hub.v1.GetConfigVersionResponse
+	18, // 32: zentinel.hub.v1.FleetService.Subscribe:output_type -> zentinel.hub.v1.Event
+	24, // 33: zentinel.hub.v1.FleetService.AckDeployment:output_type -> zentinel.hub.v1.AckDeploymentResponse
+	26, // 34: zentinel.hub.v1.FleetService.ReportDeploymentStatus:output_type -> zentinel.hub.v1.DeploymentStatusResponse
 	27, // [27:35] is the sub-list for method output_type
 	19, // [19:27] is the sub-list for method input_type
 	19, // [19:19] is the sub-list for extension type_name

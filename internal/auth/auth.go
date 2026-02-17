@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 	"github.com/rs/zerolog/log"
 )
 

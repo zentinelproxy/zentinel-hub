@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 )
 
 // setupTestStore creates a temporary SQLite store for testing.

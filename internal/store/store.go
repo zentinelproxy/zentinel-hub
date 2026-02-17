@@ -109,12 +109,12 @@ func (s *Store) CreateInstance(ctx context.Context, inst *Instance) error {
 
 	_, err = s.db.ExecContext(ctx, `
 		INSERT INTO instances (
-			id, name, hostname, agent_version, sentinel_version,
+			id, name, hostname, agent_version, zentinel_version,
 			status, last_seen_at, current_config_id, current_config_version,
 			labels, capabilities, created_at, updated_at
 		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`,
-		inst.ID, inst.Name, inst.Hostname, inst.AgentVersion, inst.SentinelVersion,
+		inst.ID, inst.Name, inst.Hostname, inst.AgentVersion, inst.ZentinelVersion,
 		inst.Status, NullTime(inst.LastSeenAt), NullString(inst.CurrentConfigID), NullInt(inst.CurrentConfigVersion),
 		string(labelsJSON), string(capsJSON), inst.CreatedAt, inst.UpdatedAt,
 	)
@@ -134,12 +134,12 @@ func (s *Store) GetInstance(ctx context.Context, id string) (*Instance, error) {
 	var configVersion sql.NullInt64
 
 	err := s.db.QueryRowContext(ctx, `
-		SELECT id, name, hostname, agent_version, sentinel_version,
+		SELECT id, name, hostname, agent_version, zentinel_version,
 			   status, last_seen_at, current_config_id, current_config_version,
 			   labels, capabilities, created_at, updated_at
 		FROM instances WHERE id = ?
 	`, id).Scan(
-		&inst.ID, &inst.Name, &inst.Hostname, &inst.AgentVersion, &inst.SentinelVersion,
+		&inst.ID, &inst.Name, &inst.Hostname, &inst.AgentVersion, &inst.ZentinelVersion,
 		&inst.Status, &lastSeenAt, &configID, &configVersion,
 		&labelsJSON, &capsJSON, &inst.CreatedAt, &inst.UpdatedAt,
 	)
@@ -184,7 +184,7 @@ func (s *Store) GetInstanceByName(ctx context.Context, name string) (*Instance, 
 // ListInstances retrieves all instances with optional filtering.
 func (s *Store) ListInstances(ctx context.Context, opts ListInstancesOptions) ([]Instance, error) {
 	query := `
-		SELECT id, name, hostname, agent_version, sentinel_version,
+		SELECT id, name, hostname, agent_version, zentinel_version,
 			   status, last_seen_at, current_config_id, current_config_version,
 			   labels, capabilities, created_at, updated_at
 		FROM instances
@@ -221,7 +221,7 @@ func (s *Store) ListInstances(ctx context.Context, opts ListInstancesOptions) ([
 		var configVersion sql.NullInt64
 
 		err := rows.Scan(
-			&inst.ID, &inst.Name, &inst.Hostname, &inst.AgentVersion, &inst.SentinelVersion,
+			&inst.ID, &inst.Name, &inst.Hostname, &inst.AgentVersion, &inst.ZentinelVersion,
 			&inst.Status, &lastSeenAt, &configID, &configVersion,
 			&labelsJSON, &capsJSON, &inst.CreatedAt, &inst.UpdatedAt,
 		)
@@ -269,12 +269,12 @@ func (s *Store) UpdateInstance(ctx context.Context, inst *Instance) error {
 
 	result, err := s.db.ExecContext(ctx, `
 		UPDATE instances SET
-			name = ?, hostname = ?, agent_version = ?, sentinel_version = ?,
+			name = ?, hostname = ?, agent_version = ?, zentinel_version = ?,
 			status = ?, last_seen_at = ?, current_config_id = ?, current_config_version = ?,
 			labels = ?, capabilities = ?, updated_at = ?
 		WHERE id = ?
 	`,
-		inst.Name, inst.Hostname, inst.AgentVersion, inst.SentinelVersion,
+		inst.Name, inst.Hostname, inst.AgentVersion, inst.ZentinelVersion,
 		inst.Status, NullTime(inst.LastSeenAt), NullString(inst.CurrentConfigID), NullInt(inst.CurrentConfigVersion),
 		string(labelsJSON), string(capsJSON), inst.UpdatedAt, inst.ID,
 	)

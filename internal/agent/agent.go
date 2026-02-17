@@ -6,14 +6,14 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"github.com/rs/zerolog/log"
 )
 
-// Agent manages the connection to Hub and local Sentinel instance.
+// Agent manages the connection to Hub and local Zentinel instance.
 type Agent struct {
 	client   *Client
-	sentinel *SentinelManager
+	zentinel *ZentinelManager
 	state    *StateManager
 
 	// Configuration
@@ -32,22 +32,22 @@ type Config struct {
 	HubURL            string
 	InstanceID        string
 	InstanceName      string
-	SentinelConfig    string
+	ZentinelConfig    string
 	StatePath         string // Path to agent state file
 	HeartbeatInterval time.Duration
 	AgentVersion      string
-	SentinelVersion   string
+	ZentinelVersion   string
 	Labels            map[string]string
 }
 
 // New creates a new Agent instance.
 func New(cfg Config) (*Agent, error) {
-	sentinel := NewSentinelManager(cfg.SentinelConfig)
+	zentinel := NewZentinelManager(cfg.ZentinelConfig)
 
 	// Initialize state manager
 	statePath := cfg.StatePath
 	if statePath == "" {
-		statePath = "/var/lib/sentinel-agent/state.json"
+		statePath = "/var/lib/zentinel-agent/state.json"
 	}
 	stateManager := NewStateManager(statePath)
 
@@ -66,7 +66,7 @@ func New(cfg Config) (*Agent, error) {
 	// If still empty, NewClient will generate one and we'll save it
 
 	agent := &Agent{
-		sentinel:          sentinel,
+		zentinel:          zentinel,
 		state:             stateManager,
 		heartbeatInterval: cfg.HeartbeatInterval,
 		stopCh:            make(chan struct{}),
@@ -78,7 +78,7 @@ func New(cfg Config) (*Agent, error) {
 		InstanceID:      instanceID,
 		InstanceName:    cfg.InstanceName,
 		AgentVersion:    cfg.AgentVersion,
-		SentinelVersion: cfg.SentinelVersion,
+		ZentinelVersion: cfg.ZentinelVersion,
 		Labels:          cfg.Labels,
 		Capabilities:    []string{"config-reload", "health-check"},
 		EventHandler:    agent,
@@ -102,7 +102,7 @@ func New(cfg Config) (*Agent, error) {
 		log.Info().
 			Str("version", state.ConfigVersion).
 			Msg("Restored config state from persisted state")
-	} else if content, err := sentinel.ReadCurrentConfig(); err == nil && content != "" {
+	} else if content, err := zentinel.ReadCurrentConfig(); err == nil && content != "" {
 		client.SetConfigFromContent("unknown", content)
 	}
 
@@ -260,12 +260,12 @@ func (a *Agent) sendHeartbeat(ctx context.Context) {
 	state := pb.InstanceState_INSTANCE_STATE_HEALTHY
 	message := "ok"
 
-	if !a.sentinel.IsRunning() {
+	if !a.zentinel.IsRunning() {
 		state = pb.InstanceState_INSTANCE_STATE_UNHEALTHY
-		message = "sentinel not running"
+		message = "zentinel not running"
 	}
 
-	// TODO: Collect real metrics from Sentinel
+	// TODO: Collect real metrics from Zentinel
 	metrics := &pb.InstanceMetrics{
 		RequestsTotal:  0,
 		RequestsFailed: 0,
@@ -350,13 +350,13 @@ func (a *Agent) OnConfigUpdate(version, hash, content string) error {
 		Msg("Applying config update...")
 
 	// Write config to disk
-	if err := a.sentinel.WriteConfig(content); err != nil {
+	if err := a.zentinel.WriteConfig(content); err != nil {
 		return err
 	}
 
-	// Reload Sentinel
-	if err := a.sentinel.Reload(); err != nil {
-		log.Warn().Err(err).Msg("Failed to reload Sentinel, config saved but not applied")
+	// Reload Zentinel
+	if err := a.zentinel.Reload(); err != nil {
+		log.Warn().Err(err).Msg("Failed to reload Zentinel, config saved but not applied")
 		// Don't return error - config is saved, just not reloaded
 	}
 
@@ -457,9 +457,9 @@ func (a *Agent) Client() *Client {
 	return a.client
 }
 
-// Sentinel returns the Sentinel manager.
-func (a *Agent) Sentinel() *SentinelManager {
-	return a.sentinel
+// Zentinel returns the Zentinel manager.
+func (a *Agent) Zentinel() *ZentinelManager {
+	return a.zentinel
 }
 
 // State returns the state manager.

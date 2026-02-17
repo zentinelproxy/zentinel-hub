@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/raskell-io/sentinel-hub/internal/auth"
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/auth"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 	"github.com/rs/zerolog/log"
 )
 

@@ -121,7 +121,7 @@ func TestStore_CreateInstance(t *testing.T) {
 		Name:            "test-instance",
 		Hostname:        "test.local",
 		AgentVersion:    "1.0.0",
-		SentinelVersion: "2.0.0",
+		ZentinelVersion: "2.0.0",
 		Status:          InstanceStatusOnline,
 		Labels:          map[string]string{"env": "test"},
 		Capabilities:    []string{"config-reload"},
@@ -184,7 +184,7 @@ func TestStore_GetInstance(t *testing.T) {
 		Name:                 "test-instance",
 		Hostname:             "test.local",
 		AgentVersion:         "1.0.0",
-		SentinelVersion:      "2.0.0",
+		ZentinelVersion:      "2.0.0",
 		Status:               InstanceStatusOnline,
 		LastSeenAt:           &now,
 		CurrentConfigID:      &configID,
@@ -1179,7 +1179,7 @@ func TestStore_CreateDeploymentInstance(t *testing.T) {
 
 	// Create required parent objects
 	createTestConfigWithVersion(t, s, "cfg-1", 1)
-	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", SentinelVersion: "1.0"}
+	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", ZentinelVersion: "1.0"}
 	s.CreateInstance(ctx, inst)
 	dep := &Deployment{ConfigID: "cfg-1", ConfigVersion: 1, TargetInstances: []string{inst.ID}}
 	s.CreateDeployment(ctx, dep)
@@ -1209,7 +1209,7 @@ func TestStore_GetDeploymentInstance(t *testing.T) {
 
 	// Create required parent objects
 	createTestConfigWithVersion(t, s, "cfg-1", 1)
-	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", SentinelVersion: "1.0"}
+	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", ZentinelVersion: "1.0"}
 	s.CreateInstance(ctx, inst)
 	dep := &Deployment{ConfigID: "cfg-1", ConfigVersion: 1, TargetInstances: []string{inst.ID}}
 	s.CreateDeployment(ctx, dep)
@@ -1265,7 +1265,7 @@ func TestStore_ListDeploymentInstances(t *testing.T) {
 	createTestConfigWithVersion(t, s, "cfg-1", 1)
 	instances := make([]*Instance, 3)
 	for i := 0; i < 3; i++ {
-		inst := &Instance{Name: "inst-" + string(rune('a'+i)), Hostname: "host", AgentVersion: "1.0", SentinelVersion: "1.0"}
+		inst := &Instance{Name: "inst-" + string(rune('a'+i)), Hostname: "host", AgentVersion: "1.0", ZentinelVersion: "1.0"}
 		s.CreateInstance(ctx, inst)
 		instances[i] = inst
 	}
@@ -1306,7 +1306,7 @@ func TestStore_UpdateDeploymentInstance(t *testing.T) {
 
 	// Create required parent objects
 	createTestConfigWithVersion(t, s, "cfg-1", 1)
-	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", SentinelVersion: "1.0"}
+	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", ZentinelVersion: "1.0"}
 	s.CreateInstance(ctx, inst)
 	dep := &Deployment{ConfigID: "cfg-1", ConfigVersion: 1, TargetInstances: []string{inst.ID}}
 	s.CreateDeployment(ctx, dep)
@@ -1363,7 +1363,7 @@ func TestStore_UpsertDeploymentInstance(t *testing.T) {
 
 	// Create required parent objects
 	createTestConfigWithVersion(t, s, "cfg-1", 1)
-	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", SentinelVersion: "1.0"}
+	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", ZentinelVersion: "1.0"}
 	s.CreateInstance(ctx, inst)
 	dep := &Deployment{ConfigID: "cfg-1", ConfigVersion: 1, TargetInstances: []string{inst.ID}}
 	s.CreateDeployment(ctx, dep)
@@ -1408,7 +1408,7 @@ func TestStore_DeleteDeploymentInstances(t *testing.T) {
 
 	// Create required parent objects
 	createTestConfigWithVersion(t, s, "cfg-1", 1)
-	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", SentinelVersion: "1.0"}
+	inst := &Instance{Name: "inst-1", Hostname: "host1", AgentVersion: "1.0", ZentinelVersion: "1.0"}
 	s.CreateInstance(ctx, inst)
 	dep := &Deployment{ConfigID: "cfg-1", ConfigVersion: 1, TargetInstances: []string{inst.ID}}
 	s.CreateDeployment(ctx, dep)

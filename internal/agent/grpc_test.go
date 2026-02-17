@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	pb "github.com/raskell-io/sentinel-hub/pkg/hubpb"
+	pb "github.com/zentinelproxy/zentinel-hub/pkg/hubpb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
@@ -298,7 +298,7 @@ func TestClient_Register(t *testing.T) {
 		InstanceID:      "test-id",
 		InstanceName:    "test-instance",
 		AgentVersion:    "1.0.0",
-		SentinelVersion: "2.0.0",
+		ZentinelVersion: "2.0.0",
 		Labels:          map[string]string{"env": "test"},
 	})
 
@@ -830,11 +830,11 @@ func TestAgent_New(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 		AgentVersion:      "1.0.0",
-		SentinelVersion:   "2.0.0",
+		ZentinelVersion:   "2.0.0",
 	})
 	if err != nil {
 		t.Fatalf("New failed: %v", err)
@@ -846,8 +846,8 @@ func TestAgent_New(t *testing.T) {
 	if agent.client == nil {
 		t.Error("client should not be nil")
 	}
-	if agent.sentinel == nil {
-		t.Error("sentinel should not be nil")
+	if agent.zentinel == nil {
+		t.Error("zentinel should not be nil")
 	}
 	if agent.state == nil {
 		t.Error("state should not be nil")
@@ -871,7 +871,7 @@ func TestAgent_New_WithExistingState(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -900,7 +900,7 @@ func TestAgent_New_ConfigInstanceIDOverridesState(t *testing.T) {
 		HubURL:            "localhost:9090",
 		InstanceID:        "config-id", // Explicit ID in config
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -922,7 +922,7 @@ func TestAgent_Accessors(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -933,8 +933,8 @@ func TestAgent_Accessors(t *testing.T) {
 	if agent.Client() == nil {
 		t.Error("Client() should not return nil")
 	}
-	if agent.Sentinel() == nil {
-		t.Error("Sentinel() should not return nil")
+	if agent.Zentinel() == nil {
+		t.Error("Zentinel() should not return nil")
 	}
 	if agent.State() == nil {
 		t.Error("State() should not return nil")
@@ -949,7 +949,7 @@ func TestAgent_IsRunning(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -970,7 +970,7 @@ func TestAgent_OnDrain(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -993,7 +993,7 @@ func TestAgent_OnConfigUpdate(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -1027,14 +1027,14 @@ func TestAgent_clearActiveDeployment_NilState(t *testing.T) {
 }
 
 // ============================================
-// SentinelManager Additional Tests
+// ZentinelManager Additional Tests
 // ============================================
 
-func TestSentinelManager_WriteConfig_CreatesDirectory(t *testing.T) {
+func TestZentinelManager_WriteConfig_CreatesDirectory(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "nested", "dir", "config.kdl")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 
 	err := sm.WriteConfig("test content")
 	if err != nil {
@@ -1050,11 +1050,11 @@ func TestSentinelManager_WriteConfig_CreatesDirectory(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_Rollback_NoBackup(t *testing.T) {
+func TestZentinelManager_Rollback_NoBackup(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 
 	err := sm.Rollback()
 	if err == nil {
@@ -1062,12 +1062,12 @@ func TestSentinelManager_Rollback_NoBackup(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_IsRunning_NoProcess(t *testing.T) {
+func TestZentinelManager_IsRunning_NoProcess(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
-	pidFile := filepath.Join(tmpDir, "sentinel.pid")
+	pidFile := filepath.Join(tmpDir, "zentinel.pid")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetPIDFile(pidFile)
 
 	// No PID file exists, so IsRunning should return false
@@ -1076,12 +1076,12 @@ func TestSentinelManager_IsRunning_NoProcess(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_CheckHealth_NoProcess(t *testing.T) {
+func TestZentinelManager_CheckHealth_NoProcess(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
-	pidFile := filepath.Join(tmpDir, "sentinel.pid")
+	pidFile := filepath.Join(tmpDir, "zentinel.pid")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetPIDFile(pidFile)
 
 	err := sm.CheckHealth()
@@ -1090,17 +1090,17 @@ func TestSentinelManager_CheckHealth_NoProcess(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_getSentinelPID_InvalidPIDFile(t *testing.T) {
+func TestZentinelManager_getZentinelPID_InvalidPIDFile(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
-	pidFile := filepath.Join(tmpDir, "sentinel.pid")
+	pidFile := filepath.Join(tmpDir, "zentinel.pid")
 
 	// Write invalid PID
 	if err := os.WriteFile(pidFile, []byte("not-a-number"), 0644); err != nil {
 		t.Fatalf("failed to write pid file: %v", err)
 	}
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetPIDFile(pidFile)
 
 	// Should fall back to pgrep which will also fail
@@ -1110,17 +1110,17 @@ func TestSentinelManager_getSentinelPID_InvalidPIDFile(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_getSentinelPID_StalePID(t *testing.T) {
+func TestZentinelManager_getZentinelPID_StalePID(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
-	pidFile := filepath.Join(tmpDir, "sentinel.pid")
+	pidFile := filepath.Join(tmpDir, "zentinel.pid")
 
 	// Write a PID that doesn't exist (use a very high PID)
 	if err := os.WriteFile(pidFile, []byte("999999999"), 0644); err != nil {
 		t.Fatalf("failed to write pid file: %v", err)
 	}
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetPIDFile(pidFile)
 
 	// Should fall back to pgrep
@@ -1130,12 +1130,12 @@ func TestSentinelManager_getSentinelPID_StalePID(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_Reload_NoProcess(t *testing.T) {
+func TestZentinelManager_Reload_NoProcess(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
-	pidFile := filepath.Join(tmpDir, "sentinel.pid")
+	pidFile := filepath.Join(tmpDir, "zentinel.pid")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetPIDFile(pidFile)
 
 	err := sm.Reload()
@@ -1358,7 +1358,7 @@ func TestAgent_OnDeployment(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "passthrough://bufnet",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -1409,7 +1409,7 @@ func TestAgent_OnDeployment_Rollback(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "passthrough://bufnet",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -1443,7 +1443,7 @@ func TestAgent_OnDeployment_FetchError(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "passthrough://bufnet",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -1480,7 +1480,7 @@ func TestAgent_reportInterruptedDeployment(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "passthrough://bufnet",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -1764,7 +1764,7 @@ func TestAgent_Stop(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "passthrough://bufnet",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})
@@ -1802,7 +1802,7 @@ func TestAgent_Stop_NotConnected(t *testing.T) {
 	agent, err := New(Config{
 		HubURL:            "localhost:9090",
 		InstanceName:      "test-instance",
-		SentinelConfig:    configPath,
+		ZentinelConfig:    configPath,
 		StatePath:         statePath,
 		HeartbeatInterval: 30 * time.Second,
 	})

@@ -1,4 +1,4 @@
--- Sentinel Hub Initial Schema
+-- Zentinel Hub Initial Schema
 -- SQLite compatible
 
 -- ============================================
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS instances (
     name TEXT NOT NULL UNIQUE,
     hostname TEXT NOT NULL,
     agent_version TEXT NOT NULL,
-    sentinel_version TEXT NOT NULL,
+    zentinel_version TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'unknown',  -- unknown, online, offline, degraded, deploying, draining
     last_seen_at DATETIME,
     current_config_id TEXT,

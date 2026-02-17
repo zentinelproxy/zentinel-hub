@@ -7,37 +7,37 @@ import (
 )
 
 // ============================================
-// SentinelManager Tests
+// ZentinelManager Tests
 // ============================================
 
-func TestNewSentinelManager(t *testing.T) {
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
+func TestNewZentinelManager(t *testing.T) {
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
 
 	if sm == nil {
-		t.Fatal("NewSentinelManager returned nil")
+		t.Fatal("NewZentinelManager returned nil")
 	}
-	if sm.configPath != "/etc/sentinel/config.kdl" {
-		t.Errorf("configPath = %q, want %q", sm.configPath, "/etc/sentinel/config.kdl")
+	if sm.configPath != "/etc/zentinel/config.kdl" {
+		t.Errorf("configPath = %q, want %q", sm.configPath, "/etc/zentinel/config.kdl")
 	}
-	if sm.pidFile != "/var/run/sentinel.pid" {
-		t.Errorf("pidFile = %q, want %q", sm.pidFile, "/var/run/sentinel.pid")
+	if sm.pidFile != "/var/run/zentinel.pid" {
+		t.Errorf("pidFile = %q, want %q", sm.pidFile, "/var/run/zentinel.pid")
 	}
-	if sm.backupDir != "/etc/sentinel" {
-		t.Errorf("backupDir = %q, want %q", sm.backupDir, "/etc/sentinel")
-	}
-}
-
-func TestSentinelManager_SetPIDFile(t *testing.T) {
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
-	sm.SetPIDFile("/custom/path/sentinel.pid")
-
-	if sm.pidFile != "/custom/path/sentinel.pid" {
-		t.Errorf("pidFile = %q, want %q", sm.pidFile, "/custom/path/sentinel.pid")
+	if sm.backupDir != "/etc/zentinel" {
+		t.Errorf("backupDir = %q, want %q", sm.backupDir, "/etc/zentinel")
 	}
 }
 
-func TestSentinelManager_SetBackupDir(t *testing.T) {
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
+func TestZentinelManager_SetPIDFile(t *testing.T) {
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
+	sm.SetPIDFile("/custom/path/zentinel.pid")
+
+	if sm.pidFile != "/custom/path/zentinel.pid" {
+		t.Errorf("pidFile = %q, want %q", sm.pidFile, "/custom/path/zentinel.pid")
+	}
+}
+
+func TestZentinelManager_SetBackupDir(t *testing.T) {
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
 	sm.SetBackupDir("/custom/backup")
 
 	if sm.backupDir != "/custom/backup" {
@@ -45,16 +45,16 @@ func TestSentinelManager_SetBackupDir(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_GetConfigPath(t *testing.T) {
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
+func TestZentinelManager_GetConfigPath(t *testing.T) {
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
 
-	if sm.GetConfigPath() != "/etc/sentinel/config.kdl" {
-		t.Errorf("GetConfigPath() = %q, want %q", sm.GetConfigPath(), "/etc/sentinel/config.kdl")
+	if sm.GetConfigPath() != "/etc/zentinel/config.kdl" {
+		t.Errorf("GetConfigPath() = %q, want %q", sm.GetConfigPath(), "/etc/zentinel/config.kdl")
 	}
 }
 
-func TestSentinelManager_GetCurrentConfig(t *testing.T) {
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
+func TestZentinelManager_GetCurrentConfig(t *testing.T) {
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
 
 	if sm.GetCurrentConfig() != "" {
 		t.Errorf("GetCurrentConfig() = %q, want empty", sm.GetCurrentConfig())
@@ -66,11 +66,11 @@ func TestSentinelManager_GetCurrentConfig(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_ReadCurrentConfig(t *testing.T) {
+func TestZentinelManager_ReadCurrentConfig(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 
 	// Test reading non-existent file
 	content, err := sm.ReadCurrentConfig()
@@ -102,11 +102,11 @@ func TestSentinelManager_ReadCurrentConfig(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_WriteConfig(t *testing.T) {
+func TestZentinelManager_WriteConfig(t *testing.T) {
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "sentinel", "config.kdl")
+	configPath := filepath.Join(tmpDir, "zentinel", "config.kdl")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetBackupDir(tmpDir)
 
 	// Test writing to new file (creates directory)
@@ -157,12 +157,12 @@ func TestSentinelManager_WriteConfig(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_Rollback(t *testing.T) {
+func TestZentinelManager_Rollback(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 	backupPath := filepath.Join(tmpDir, "config.kdl.bak")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetBackupDir(tmpDir)
 
 	// Test rollback without backup
@@ -202,12 +202,12 @@ func TestSentinelManager_Rollback(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_copyFile(t *testing.T) {
+func TestZentinelManager_copyFile(t *testing.T) {
 	tmpDir := t.TempDir()
 	srcPath := filepath.Join(tmpDir, "src.txt")
 	dstPath := filepath.Join(tmpDir, "dst.txt")
 
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
 
 	// Create source file
 	content := "test file content"
@@ -231,9 +231,9 @@ func TestSentinelManager_copyFile(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_copyFile_NotFound(t *testing.T) {
+func TestZentinelManager_copyFile_NotFound(t *testing.T) {
 	tmpDir := t.TempDir()
-	sm := NewSentinelManager("/etc/sentinel/config.kdl")
+	sm := NewZentinelManager("/etc/zentinel/config.kdl")
 
 	err := sm.copyFile(filepath.Join(tmpDir, "nonexistent"), filepath.Join(tmpDir, "dst"))
 	if err == nil {
@@ -251,7 +251,7 @@ func TestNewClient(t *testing.T) {
 		InstanceID:      "inst-1",
 		InstanceName:    "test-instance",
 		AgentVersion:    "1.0.0",
-		SentinelVersion: "2.0.0",
+		ZentinelVersion: "2.0.0",
 		Labels:          map[string]string{"env": "test"},
 		Capabilities:    []string{"config-reload"},
 	}
@@ -276,8 +276,8 @@ func TestNewClient(t *testing.T) {
 	if client.agentVersion != "1.0.0" {
 		t.Errorf("agentVersion = %q, want %q", client.agentVersion, "1.0.0")
 	}
-	if client.sentinelVersion != "2.0.0" {
-		t.Errorf("sentinelVersion = %q, want %q", client.sentinelVersion, "2.0.0")
+	if client.zentinelVersion != "2.0.0" {
+		t.Errorf("zentinelVersion = %q, want %q", client.zentinelVersion, "2.0.0")
 	}
 	if client.labels["env"] != "test" {
 		t.Errorf("labels[env] = %q, want %q", client.labels["env"], "test")
@@ -410,10 +410,10 @@ func TestAgentConfig(t *testing.T) {
 		HubURL:            "localhost:9090",
 		InstanceID:        "inst-1",
 		InstanceName:      "test-agent",
-		SentinelConfig:    "/etc/sentinel/config.kdl",
+		ZentinelConfig:    "/etc/zentinel/config.kdl",
 		HeartbeatInterval: 30,
 		AgentVersion:      "1.0.0",
-		SentinelVersion:   "2.0.0",
+		ZentinelVersion:   "2.0.0",
 		Labels:            map[string]string{"env": "test", "region": "us-west"},
 	}
 
@@ -426,8 +426,8 @@ func TestAgentConfig(t *testing.T) {
 	if cfg.InstanceName != "test-agent" {
 		t.Errorf("InstanceName = %q, want %q", cfg.InstanceName, "test-agent")
 	}
-	if cfg.SentinelConfig != "/etc/sentinel/config.kdl" {
-		t.Errorf("SentinelConfig = %q, want %q", cfg.SentinelConfig, "/etc/sentinel/config.kdl")
+	if cfg.ZentinelConfig != "/etc/zentinel/config.kdl" {
+		t.Errorf("ZentinelConfig = %q, want %q", cfg.ZentinelConfig, "/etc/zentinel/config.kdl")
 	}
 	if cfg.HeartbeatInterval != 30 {
 		t.Errorf("HeartbeatInterval = %v, want 30", cfg.HeartbeatInterval)
@@ -567,7 +567,7 @@ func TestClient_ConcurrentConfigState(t *testing.T) {
 	<-done
 }
 
-func TestSentinelManager_ConcurrentConfigRead(t *testing.T) {
+func TestZentinelManager_ConcurrentConfigRead(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 
@@ -576,7 +576,7 @@ func TestSentinelManager_ConcurrentConfigRead(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 
 	done := make(chan struct{})
 
@@ -808,19 +808,19 @@ func TestEventHandler_ErrorDuringReconnect(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_ConfigPersistenceAcrossReconnect(t *testing.T) {
+func TestZentinelManager_ConfigPersistenceAcrossReconnect(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 
 	// First "session" - write config
-	sm1 := NewSentinelManager(configPath)
+	sm1 := NewZentinelManager(configPath)
 	originalContent := "server { listen 8080 }"
 	if err := sm1.WriteConfig(originalContent); err != nil {
 		t.Fatalf("WriteConfig failed: %v", err)
 	}
 
-	// Simulate agent restart - new SentinelManager instance
-	sm2 := NewSentinelManager(configPath)
+	// Simulate agent restart - new ZentinelManager instance
+	sm2 := NewZentinelManager(configPath)
 
 	// Read config from disk (as agent would do on startup)
 	content, err := sm2.ReadCurrentConfig()
@@ -833,11 +833,11 @@ func TestSentinelManager_ConfigPersistenceAcrossReconnect(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_BackupAvailableAfterReconnect(t *testing.T) {
+func TestZentinelManager_BackupAvailableAfterReconnect(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 	sm.SetBackupDir(tmpDir)
 
 	// Write initial config
@@ -851,7 +851,7 @@ func TestSentinelManager_BackupAvailableAfterReconnect(t *testing.T) {
 	}
 
 	// Simulate agent restart
-	sm2 := NewSentinelManager(configPath)
+	sm2 := NewZentinelManager(configPath)
 	sm2.SetBackupDir(tmpDir)
 
 	// Current config should be v2
@@ -983,11 +983,11 @@ func TestEventHandler_DeploymentErrorRecovery(t *testing.T) {
 	}
 }
 
-func TestSentinelManager_WriteConfigAtomicity(t *testing.T) {
+func TestZentinelManager_WriteConfigAtomicity(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.kdl")
 
-	sm := NewSentinelManager(configPath)
+	sm := NewZentinelManager(configPath)
 
 	// Write config
 	content := "atomic write test"

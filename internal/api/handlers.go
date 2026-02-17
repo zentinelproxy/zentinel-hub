@@ -9,9 +9,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/raskell-io/sentinel-hub/internal/auth"
-	"github.com/raskell-io/sentinel-hub/internal/fleet"
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/auth"
+	"github.com/zentinelproxy/zentinel-hub/internal/fleet"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 	"github.com/rs/zerolog/log"
 )
 
@@ -132,7 +132,7 @@ type CreateInstanceRequest struct {
 	Name            string            `json:"name"`
 	Hostname        string            `json:"hostname"`
 	AgentVersion    string            `json:"agent_version"`
-	SentinelVersion string            `json:"sentinel_version"`
+	ZentinelVersion string            `json:"zentinel_version"`
 	Labels          map[string]string `json:"labels,omitempty"`
 	Capabilities    []string          `json:"capabilities,omitempty"`
 }
@@ -174,7 +174,7 @@ func (h *Handler) CreateInstance(w http.ResponseWriter, r *http.Request) {
 		Name:            req.Name,
 		Hostname:        req.Hostname,
 		AgentVersion:    req.AgentVersion,
-		SentinelVersion: req.SentinelVersion,
+		ZentinelVersion: req.ZentinelVersion,
 		Status:          store.InstanceStatusUnknown,
 		Labels:          req.Labels,
 		Capabilities:    req.Capabilities,
@@ -215,7 +215,7 @@ type UpdateInstanceRequest struct {
 	Name            *string            `json:"name,omitempty"`
 	Hostname        *string            `json:"hostname,omitempty"`
 	AgentVersion    *string            `json:"agent_version,omitempty"`
-	SentinelVersion *string            `json:"sentinel_version,omitempty"`
+	ZentinelVersion *string            `json:"zentinel_version,omitempty"`
 	Status          *string            `json:"status,omitempty"`
 	Labels          *map[string]string `json:"labels,omitempty"`
 }
@@ -253,8 +253,8 @@ func (h *Handler) UpdateInstance(w http.ResponseWriter, r *http.Request) {
 	if req.AgentVersion != nil {
 		inst.AgentVersion = *req.AgentVersion
 	}
-	if req.SentinelVersion != nil {
-		inst.SentinelVersion = *req.SentinelVersion
+	if req.ZentinelVersion != nil {
+		inst.ZentinelVersion = *req.ZentinelVersion
 	}
 	if req.Status != nil {
 		inst.Status = store.InstanceStatus(*req.Status)

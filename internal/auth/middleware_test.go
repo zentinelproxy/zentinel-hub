@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/raskell-io/sentinel-hub/internal/store"
+	"github.com/zentinelproxy/zentinel-hub/internal/store"
 )
 
 func TestGetUserFromContext_NoUser(t *testing.T) {

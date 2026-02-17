@@ -2,13 +2,13 @@
 
 **Last Updated:** 2025-12-31
 
-This document describes the architecture for managing a fleet of Sentinel proxy instances through Sentinel Hub.
+This document describes the architecture for managing a fleet of Zentinel proxy instances through Zentinel Hub.
 
 ---
 
 ## Overview
 
-Sentinel Hub uses a **hybrid push/pull model** for configuration distribution:
+Zentinel Hub uses a **hybrid push/pull model** for configuration distribution:
 
 - **Pull**: Agents poll Hub for configuration changes (resilient, stateless)
 - **Push**: Hub notifies agents of pending changes via gRPC streaming (instant updates)
@@ -22,7 +22,7 @@ This approach combines the reliability of polling with the responsiveness of pus
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        SENTINEL HUB                              │
+│                        ZENTINEL HUB                              │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │
 │  │  REST API   │  │  gRPC API   │  │  Deployment Orchestrator │  │
@@ -52,7 +52,7 @@ This approach combines the reliability of polling with the responsiveness of pus
     ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
     │   Agent     │ │   Agent     │ │   Agent     │
     │  ┌───────┐  │ │  ┌───────┐  │ │  ┌───────┐  │
-    │  │Sentinel│  │ │  │Sentinel│  │ │  │Sentinel│  │
+    │  │Zentinel│  │ │  │Zentinel│  │ │  │Zentinel│  │
     │  └───────┘  │ │  └───────┘  │ │  └───────┘  │
     └─────────────┘ └─────────────┘ └─────────────┘
 ```
@@ -66,7 +66,7 @@ This approach combines the reliability of polling with the responsiveness of pus
 ```protobuf
 syntax = "proto3";
 
-package sentinel.hub.v1;
+package zentinel.hub.v1;
 
 service FleetService {
   // ============================================
@@ -122,7 +122,7 @@ message RegisterRequest {
   string instance_name = 2;      // Human-readable name
   string hostname = 3;           // Machine hostname
   string agent_version = 4;      // Agent binary version
-  string sentinel_version = 5;   // Sentinel proxy version
+  string zentinel_version = 5;   // Zentinel proxy version
   map<string, string> labels = 6; // Custom labels for filtering
   repeated string capabilities = 7; // Supported features
 }
@@ -287,7 +287,7 @@ Agent                              Hub
   │<─── GetConfigResponse ──────────│
   │     (KDL content)               │
   │                                 │
-  │     Apply config to Sentinel    │
+  │     Apply config to Zentinel    │
   │                                 │
   │──── Heartbeat ─────────────────>│
   │     (status: HEALTHY)           │
@@ -314,7 +314,7 @@ Hub                               Agent 1              Agent 2              Agen
  │                                   │<─ Config content ──│                    │
  │                                   │                    │                    │
  │                                   │   Write config     │                    │
- │                                   │   SIGHUP Sentinel  │                    │
+ │                                   │   SIGHUP Zentinel  │                    │
  │                                   │   Health check     │                    │
  │                                   │                    │                    │
  │<── ReportStatus(COMPLETED) ───────│                    │                    │
@@ -422,9 +422,9 @@ Hub                               Agent 1              Agent 2
 | State | Description | Transitions |
 |-------|-------------|-------------|
 | **UNKNOWN** | Initial state before registration | → ONLINE (on Register) |
-| **ONLINE** | Agent connected, Sentinel healthy | → DEPLOYING, DEGRADED, OFFLINE |
+| **ONLINE** | Agent connected, Zentinel healthy | → DEPLOYING, DEGRADED, OFFLINE |
 | **DEPLOYING** | Configuration deployment in progress | → ONLINE (success), DEGRADED (partial), OFFLINE (agent lost) |
-| **DEGRADED** | Sentinel running but with issues | → ONLINE (recovery), OFFLINE (failure) |
+| **DEGRADED** | Zentinel running but with issues | → ONLINE (recovery), OFFLINE (failure) |
 | **OFFLINE** | No heartbeat received within timeout | → ONLINE (reconnect), DRAINING (manual) |
 | **DRAINING** | Graceful shutdown in progress | → REMOVED |
 | **REMOVED** | Instance deregistered | Terminal state |
@@ -540,7 +540,7 @@ Agents authenticate to Hub using **mTLS**:
 │  Certificate Fields:                                             │
 │  - CN: instance-id (for agents)                                 │
 │  - O: organization                                               │
-│  - OU: sentinel-agent                                           │
+│  - OU: zentinel-agent                                           │
 │  - SAN: hostname, IP (for hub)                                  │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
@@ -602,7 +602,7 @@ upstream "api" {
    - TLS cert/key pairs match
 
 4. **Runtime Validation** (Agent, on apply)
-   - Sentinel accepts configuration
+   - Zentinel accepts configuration
    - Health check passes
 
 ---
@@ -624,7 +624,7 @@ upstream "api" {
 ```yaml
 # Prometheus alerting rules
 groups:
-  - name: sentinel-hub
+  - name: zentinel-hub
     rules:
       - alert: AgentOffline
         expr: hub_agents_offline > 0
@@ -632,14 +632,14 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "{{ $value }} Sentinel agents offline"
+          summary: "{{ $value }} Zentinel agents offline"
 
       - alert: DeploymentFailed
         expr: increase(hub_deployment_failures_total[1h]) > 0
         labels:
           severity: critical
         annotations:
-          summary: "Sentinel deployment failed"
+          summary: "Zentinel deployment failed"
 
       - alert: ConfigSyncLag
         expr: hub_config_sync_lag_seconds > 300
@@ -664,7 +664,7 @@ groups:
 1. GetConfig implementation
 2. Config versioning in database
 3. Agent config application
-4. Sentinel reload integration
+4. Zentinel reload integration
 
 ### Phase 3: Event Streaming
 1. Subscribe implementation
