@@ -1,165 +1,117 @@
-# Zentinel Hub
+<p align="center">
+  <a href="https://zentinelproxy.io">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/zentinelproxy/design/main/marks/lockup/zentinel-lockup-dark.svg">
+      <img alt="Zentinel" src="https://raw.githubusercontent.com/zentinelproxy/design/main/marks/lockup/zentinel-lockup-light.svg" height="52">
+    </picture>
+  </a>
+</p>
 
-Fleet management control plane for [Zentinel](https://github.com/zentinelproxy/zentinel) reverse proxies.
+<h3 align="center">Zentinel Hub (deprecated)</h3>
 
-**Status:** Pre-alpha (under active development)
+<p align="center">An earlier, Go-based fleet manager for Zentinel proxies, superseded by the Zentinel control plane.</p>
 
-## Overview
+<p align="center">
+  <img alt="Go" src="https://img.shields.io/badge/go-1.25%2B-f68d31?style=flat&labelColor=1f161e&logo=go&logoColor=white">
+</p>
 
-Zentinel Hub provides centralized management for Zentinel proxy fleets:
+<p align="center">
+  <a href="https://github.com/zentinelproxy/zentinel-control-plane">Zentinel control plane</a> &middot;
+  <a href="https://docs.zentinelproxy.io">Docs</a> &middot;
+  <a href="https://github.com/zentinelproxy">All repositories</a>
+</p>
 
-- **Configuration Management** — Create, version, and deploy configurations
-- **Fleet Visibility** — Monitor health and status across all instances
-- **Safe Deployments** — Rolling updates with automatic rollback
-- **Audit Logging** — Track all changes for compliance
+> **Deprecated.** Zentinel Hub is no longer developed. Fleet management lives
+> in [zentinel-control-plane](https://github.com/zentinelproxy/zentinel-control-plane).
+> This repository is kept for reference; do not deploy it.
 
-## Architecture
+Zentinel Hub was a pre-alpha control plane: a Go API server (`hub`) with a
+Next.js web UI, and a small sidecar (`agent`, not a Zentinel agent in the
+agent-protocol sense) that runs next to each proxy, connects to the hub over
+gRPC, registers, sends heartbeats and receives configuration and deployment events. The hub versions configurations, tracks instances and
+records deployments and an audit log.
+
+## How it works
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │   Web UI    │────▶│  Hub API    │────▶│  Database   │
 │  (Next.js)  │     │    (Go)     │     │ (SQLite/PG) │
 └─────────────┘     └──────┬──────┘     └─────────────┘
-                           │
-                    ┌──────┴──────┐
-                    │    gRPC     │
-                    └──────┬──────┘
+                           │ gRPC
          ┌─────────────────┼─────────────────┐
          ▼                 ▼                 ▼
     ┌─────────┐       ┌─────────┐       ┌─────────┐
-    │  Agent  │       │  Agent  │       │  Agent  │
+    │ sidecar │       │ sidecar │       │ sidecar │
     └────┬────┘       └────┬────┘       └────┬────┘
     ┌────┴────┐       ┌────┴────┐       ┌────┴────┐
     │Zentinel │       │Zentinel │       │Zentinel │
     └─────────┘       └─────────┘       └─────────┘
 ```
 
-## Quick Start
-
-### Prerequisites
-
-- [mise](https://mise.jdx.dev/) (manages Go and Node.js versions)
-
-### Setup
-
-```bash
-# Install tools and dependencies
-mise install
-mise run setup
-```
-
-### Development
-
-```bash
-# Run hub server
-mise run dev
-
-# Run web frontend (in another terminal)
-mise run dev:web
-
-# Run both together
-mise run dev:all
-```
-
-### Build
-
-```bash
-# Build all binaries
-mise run build
-
-# Build release binaries
-mise run release
-```
-
-### Test
-
-```bash
-# Run all tests
-mise run test
-
-# Run with coverage
-mise run test:coverage
-```
-
 ## Configuration
 
-### Hub Server
+`hub serve` flags:
 
-| Environment Variable | Default | Description |
-|---------------------|---------|-------------|
-| `HUB_PORT` | `8080` | HTTP server port |
-| `HUB_GRPC_PORT` | `9090` | gRPC server port |
-| `HUB_DATABASE_URL` | `sqlite://hub.db` | Database connection URL |
-| `HUB_JWT_SECRET` | (required) | JWT signing secret |
-| `HUB_LOG_LEVEL` | `info` | Log level (debug, info, warn, error) |
-| `HUB_LOG_FORMAT` | `console` | Log format (console, json) |
+| Option | Default | Meaning |
+|---|---|---|
+| `--http-port` | `8080` | HTTP API port |
+| `--grpc-port` | `9090` | gRPC port for sidecars |
+| `--database-url` | `sqlite://hub.db` | Database URL |
 
-### Agent
+Environment: `HUB_JWT_SECRET` (falls back to an insecure development secret
+with a warning), `HUB_ADMIN_EMAIL` / `HUB_ADMIN_PASSWORD` / `HUB_ADMIN_NAME`
+(seed an admin user), `HUB_LOG_FORMAT=json`.
 
-| Environment Variable | Default | Description |
-|---------------------|---------|-------------|
-| `AGENT_HUB_URL` | `localhost:9090` | Hub gRPC server URL |
-| `AGENT_INSTANCE_NAME` | (hostname) | Instance identifier |
-| `AGENT_ZENTINEL_CONFIG` | `/etc/zentinel/config.kdl` | Zentinel config path |
-| `AGENT_HEARTBEAT_INTERVAL` | `30` | Heartbeat interval (seconds) |
+`agent run` flags: `--hub-url` (`localhost:9090`), `--instance-id`,
+`--instance-name` (hostname), `--zentinel-config`
+(`/etc/zentinel/config.kdl`), `--zentinel-version`, `--heartbeat-interval`
+(`30` seconds), `--label key=value` (repeatable). Environment:
+`AGENT_LOG_LEVEL`, `AGENT_LOG_FORMAT`.
 
 ## API
 
-### REST API
-
-The Hub exposes a REST API for the web UI and external integrations:
-
 ```
-GET    /api/v1/instances          # List instances
-POST   /api/v1/instances          # Register instance
-GET    /api/v1/instances/:id      # Get instance details
-
-GET    /api/v1/configs            # List configurations
-POST   /api/v1/configs            # Create configuration
-PUT    /api/v1/configs/:id        # Update configuration
-GET    /api/v1/configs/:id/versions  # List versions
-
-POST   /api/v1/deployments        # Create deployment
-GET    /api/v1/deployments/:id    # Get deployment status
+GET  /health, /ready, /stats
+POST /api/v1/auth/login | /auth/refresh | /auth/logout     GET /api/v1/auth/me
+GET  /api/v1/instances[/{id}]       POST /api/v1/instances      PUT|DELETE /api/v1/instances/{id}
+GET  /api/v1/configs[/{id}]         POST /api/v1/configs        PUT|DELETE /api/v1/configs/{id}
+GET  /api/v1/configs/{id}/versions  POST /api/v1/configs/{id}/rollback
+GET  /api/v1/deployments[/{id}]     POST /api/v1/deployments    POST /api/v1/deployments/{id}/cancel
+     /api/v1/users[/{id}]           POST /api/v1/users/{id}/reset-password
+GET  /api/v1/audit-logs
 ```
 
-### Health Endpoints
+## Development
 
-```
-GET /health   # Liveness probe
-GET /ready    # Readiness probe
-```
+Requires [mise](https://mise.jdx.dev/) (Go 1.25.5 and Node 22 are pinned in
+`mise.toml`).
 
-## Available Tasks
-
-Run `mise tasks` to see all available tasks:
-
-```
-mise run build       # Build all binaries
-mise run dev         # Run hub in development mode
-mise run dev:web     # Run web frontend dev server
-mise run dev:all     # Run both together
-mise run test        # Run all tests
-mise run lint        # Run linters
-mise run check       # Run fmt, lint, and test
+```bash
+mise install
+mise run setup        # Go modules and web dependencies
+mise run dev          # go run ./cmd/hub serve
+mise run dev:web      # Next.js dev server
+mise run dev:all      # both
+mise run build        # bin/hub and bin/agent
+mise run test         # go tests
+mise run check        # fmt, lint, test
 ```
 
-## Tech Stack
+There is no CI workflow in this repository.
 
-- **Backend:** Go 1.23, chi router, zerolog
-- **Frontend:** Next.js 15, React 19, TypeScript, shadcn/ui, Tailwind CSS
-- **Database:** SQLite (dev), PostgreSQL (production)
+## Related
 
-## Documentation
-
-- [Architecture](.claude/ARCHITECTURE.md) — System design and components
-- [Roadmap](.claude/ROADMAP.md) — Development roadmap and milestones
+- [zentinel-control-plane](https://github.com/zentinelproxy/zentinel-control-plane): the replacement
+- [Zentinel](https://github.com/zentinelproxy/zentinel): the proxy
+- [docs/fleet-management.md](docs/fleet-management.md), [.claude/ARCHITECTURE.md](.claude/ARCHITECTURE.md), [.claude/ROADMAP.md](.claude/ROADMAP.md): design notes from when it was active
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+This repository has no `LICENSE` file.
 
-## Related Projects
+---
 
-- [Zentinel](https://github.com/zentinelproxy/zentinel) — The reverse proxy this manages
-- [Zentinel Bench](https://github.com/zentinelproxy/zentinel-bench) — Performance benchmarks
+<p align="center">
+  <sub>Part of <a href="https://zentinelproxy.io">Zentinel</a>, the security-first reverse proxy. The shisa guards the gate.</sub>
+</p>
