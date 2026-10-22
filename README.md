@@ -12,6 +12,7 @@
 <p align="center">An earlier, Go-based fleet manager for Zentinel proxies, superseded by the Zentinel control plane.</p>
 
 <p align="center">
+  <img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-9b4d8a?style=flat&labelColor=1f161e">
   <img alt="Go" src="https://img.shields.io/badge/go-1.25%2B-f68d31?style=flat&labelColor=1f161e&logo=go&logoColor=white">
 </p>
 
@@ -108,7 +109,7 @@ There is no CI workflow in this repository.
 
 ## License
 
-This repository has no `LICENSE` file.
+Apache-2.0, see [`LICENSE`](LICENSE).
 
 ---
 
